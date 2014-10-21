@@ -8,6 +8,9 @@ import requests
 import json
 from collections import deque
 import math
+from easyNav_pi_dispatcher import DispatcherClient
+import smokesignal
+
 
 def get_time():
     millis = int(round(time.time() * 1000))
@@ -251,37 +254,6 @@ class SerialAccel:
         self.ser.flush()
         self.ser.close()
 
-# Serial class
-class SerialAngle:
-
-    # constr
-    def __init__(self, strPort):
-        # open serial port
-        self.ser = serial.Serial(strPort, 57600)
-        self.orientation = 0
-        self.heading = 0
-
-    def read(self):
-        # read line
-        # #YPRMfssT=,-1.24,-2.04,-179.52,1.08,0.04,-0.01,-1.00,10.00,
-
-        line = self.ser.readline()
-        self.arr = line.split(",")
-        ctrl = self.arr[0]
-        if ctrl != "#Orientation;Heading;ForwardAccel;Time;OnGround=":
-            return
-
-        try:
-            self.orientation = float(self.arr[1])
-            self.heading = float(self.arr[2])
-        except:
-            return
-
-    def close(self):
-        # close serial
-        self.ser.flush()
-        self.ser.close()
-
 # Data class
 class DataClass:
 
@@ -374,6 +346,7 @@ class CrunchClass:
             Avg
             """
 
+            print "AVG: "+str(avg)
 
             # Logic for missed data -  overestimates double step
             if avg > 2.0:
@@ -537,20 +510,37 @@ def run_requests(ns):
         data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
         #print data
 
+
+# Angle class
+class AngleEvent:
+
+    # constr
+    def __init__(self):
+        self.dispatcherClient = DispatcherClient(port=9003)
+        self.dispatcherClient.attachEvents()
+
+        self.angle = 0
+
+
+    def attachEvents(self):
+        smokesignal.clear()
+        @smokesignal.on("angle")
+        def onAngle(args):
+            self.angle = args["angle"]
+
 def run_angle(ns):
-    serialAngle = SerialAngle("/dev/tty.usbserial-A5025VIL")
+
+    angle_event = AngleEvent()
 
     while(1):
 
-        serialAngle.read()
+        angle = angle_event.angle()
 
-        shifted_angle = serialAngle.heading - 60
+        shifted_angle = angle - 60
         if (shifted_angle < 0):
             shifted_angle = 360 + shifted_angle
 
         ns.yaw = shifted_angle
-
-
 
 if __name__ == '__main__':
 
@@ -589,7 +579,11 @@ if __name__ == '__main__':
     # Serial Loop
     while(1):
 
+        #print "A"
         serialAccel.read()
+        #print "B"
+
+        #print "ACCEL"
 
         if(serialAccel.on_ground == 0):
             crunch.add(serialAccel.mag, serialAccel.ms, ns.yaw)
