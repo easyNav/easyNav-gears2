@@ -352,10 +352,6 @@ class CrunchClass:
 
             print "AVG: "+str(avg)
 
-            # Logic for missed data -  overestimates double step
-            if avg > 2.0:
-                avg = 2.0
-
             # If below threshold reject
             if avg < 0.3:
                 return None
@@ -363,7 +359,9 @@ class CrunchClass:
             # Within Range:
             if avg < 0.8:
                 avg = 0.8
-            if avg > 1.2:
+            elif avg > 2.0:
+                avg = 2.0
+            elif avg > 1.2:
                 avg = 1.2
 
             # Moving Average
