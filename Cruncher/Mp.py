@@ -8,8 +8,12 @@ import requests
 import json
 from collections import deque
 import math
-from easyNav_pi_dispatcher import DispatcherClient
-import smokesignal
+
+try:
+    from easyNav_pi_dispatcher import DispatcherClient
+    import smokesignal
+except:
+    print "NO SMOKE"
 
 
 def get_time():
@@ -545,7 +549,9 @@ def run_angle(ns):
 if __name__ == '__main__':
 
     # Classes
-    serialAccel = SerialAccel("/dev/ttyUSB0")
+    serial_port = "/dev/tty.usbserial-A600dRYL"
+    #serial_port = "/dev/ttyUSB0"
+    serialAccel = SerialAccel(serial_port)
 
     crunch = CrunchClass()
     position = PositionClass(14.20, 14.40, 180)
