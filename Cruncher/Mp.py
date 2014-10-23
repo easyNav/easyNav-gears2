@@ -239,7 +239,7 @@ class SerialAccel:
             line = self.ser.readline()
             self.arr = line.split(",")
             ctrl = self.arr[0]
-            if ctrl != "#YPRMfssT=":
+            if ctrl != "#":
                 return
         except:
             return
