@@ -583,10 +583,11 @@ class StartingEvent:
         print "attached"
         @smokesignal.on("starting")
         def onStarting(args):
-            print args
             item = eval(args.get('payload'))
             self.x = float(item["x"])/100
             self.y = float(item["y"])/100
+            print self.x
+            print self.y
             self.av = 1
 
 
