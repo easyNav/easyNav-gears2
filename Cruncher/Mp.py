@@ -628,7 +628,7 @@ if __name__ == '__main__':
 
     # Serial Ports
     if ns.device == "pi":
-        serial_port = "/dev/ttyUSB1"
+        serial_port = "/dev/ttyUSB0"
     elif ns.device == "mac":
         serial_port = "/dev/tty.usbserial-A600dRYL"
     serialAccel = SerialAccel(serial_port)
