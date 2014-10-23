@@ -509,7 +509,7 @@ class AngleEvent:
     # constr
     def __init__(self):
         self.dispatcherClient = DispatcherClient(port=9003)
-        self.dispatcherClient.attachEvents()
+        self.attachEvents()
         self.dispatcherClient.start()
 
         self.angle = 0
@@ -540,7 +540,7 @@ class StartingEvent:
     # constr
     def __init__(self):
         self.dispatcherClient = DispatcherClient(port=9003)
-        self.dispatcherClient.attachEvents()
+        self.attachEvents()
         self.dispatcherClient.start()
 
         self.x = 0
