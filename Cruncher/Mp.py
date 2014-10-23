@@ -548,11 +548,11 @@ class StartingEvent:
 
         self.x = 0
         self.y = 0
-        self.available = 0
+        self.av = 0
 
     def available(self):
-        if self.available == 1:
-            self.available = 0
+        if self.av == 1:
+            self.av = 0
             return 1
         else:
             return 0
@@ -564,7 +564,7 @@ class StartingEvent:
         def onStarting(args):
             self.x = float(args["x"])/100
             self.y = float(args["y"])/100
-            self.available = 1
+            self.av = 1
 
 
 if __name__ == '__main__':
