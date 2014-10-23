@@ -609,7 +609,7 @@ if __name__ == '__main__':
 
     # Serial Ports
     if ns.device == "pi":
-        serial_port = "/dev/ttyUSB0"
+        serial_port = "/dev/ttyUSB1"
     elif ns.device == "mac":
         serial_port = "/dev/tty.usbserial-A600dRYL"
     serialAccel = SerialAccel(serial_port)
@@ -620,10 +620,10 @@ if __name__ == '__main__':
     position = PositionClass(0, 0, 0)
 
     # Mp
-    #p1 = multiprocessing.Process(target=run_graph, args=(ns,))
-    #p1.start()
-    #p2 = multiprocessing.Process(target=run_requests, args=(ns,))
-    #p2.start()
+    p1 = multiprocessing.Process(target=run_graph, args=(ns,))
+    p1.start()
+    p2 = multiprocessing.Process(target=run_requests, args=(ns,))
+    p2.start()
     p3 = multiprocessing.Process(target=run_angle, args=(ns,))
     p3.start()
 
@@ -657,7 +657,7 @@ if __name__ == '__main__':
                 ns.x = position.x
                 ns.y = position.y
 
-    #p1.join()
-    #p2.join()
+    p1.join()
+    p2.join()
     p3.join()
     print 'after', ns
