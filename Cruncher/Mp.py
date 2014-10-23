@@ -498,8 +498,8 @@ def run_graph(ns):
     while(1):
         time.sleep(0.1)
         graph.set_angle(ns.yaw)
-        if ns.ping == 1:
-            ns.ping = 0;
+        if ns.ping_graph == 1:
+            ns.ping_graph = 0;
             graph.set_g3(ns.total,ns.yaw)
             graph.set_g1(ns.raw_arr, "r")
             graph.set_g1(ns.smth_arr, "g")
@@ -561,11 +561,10 @@ def run_angle(ns):
 class StartingEvent:
 
     # constr
-    def __init__(self, device):
-        if device == "pi":
-            self.dispatcherClient = DispatcherClient(port=9003)
-            self.attachEvents()
-            self.dispatcherClient.start()
+    def __init__(self):
+        self.dispatcherClient = DispatcherClient(port=9003)
+        self.attachEvents()
+        self.dispatcherClient.start()
 
         self.x = 0
         self.y = 0
@@ -586,9 +585,21 @@ class StartingEvent:
             item = eval(args.get('payload'))
             self.x = float(item["x"])/100
             self.y = float(item["y"])/100
-            print self.x
-            print self.y
             self.av = 1
+
+def run_starting(ns):
+
+    if ns.device == "mac":
+        return
+
+    starting_event = StartingEvent()
+
+    while(1):
+
+        if starting_event.available() == 1:
+            ns.startx = starting_event.x
+            ns.starty = starting_event.y
+            ns.ping_start = 1
 
 
 if __name__ == '__main__':
@@ -609,8 +620,11 @@ if __name__ == '__main__':
     ns.y = 0
     ns.yaw = 0
     ns.total = 0
-    ns.ping = 0
+    ns.ping_graph = 0
     ns.device = device
+    ns.startx = 0
+    ns.starty = 0
+    ns.ping_start = 0
 
     # Serial Ports
     if ns.device == "pi":
@@ -631,13 +645,17 @@ if __name__ == '__main__':
     #p2.start()
     p3 = multiprocessing.Process(target=run_angle, args=(ns,))
     p3.start()
+    p4 = multiprocessing.Process(target=run_starting, args=(ns,))
+    p4.start()
 
     # Serial Loop
     while(1):
 
         # Check for change in start pos
-        if starting_event.available() == 1:
-            position.set_init(starting_event.x, starting_event.y, ns.yaw)
+        if ns.ping_start == 1:
+            print "Starting data received: " + str(ns.startx) + " " + str(ns.starty)
+            ns.ping_start = 0
+            position.set_init(ns.startx, ns.starty, ns.yaw)
 
         # Read Accel data
         serialAccel.read()
@@ -655,7 +673,7 @@ if __name__ == '__main__':
                 ns.ang_arr = data_obj.ang_arr
                 ns.ms_arr = data_obj.ms_arr
                 ns.total = data_obj.total
-                ns.ping = 1
+                ns.ping_graph = 1
 
                 position.set_pos(data_obj.total, ns.yaw)
                 position.print_all()
@@ -665,4 +683,5 @@ if __name__ == '__main__':
     p1.join()
     #p2.join()
     p3.join()
+    p4.join()
     print 'after', ns
