@@ -563,7 +563,6 @@ class StartingEvent:
     # constr
     def __init__(self, device):
         if device == "pi":
-            print "attached"
             self.dispatcherClient = DispatcherClient(port=9003)
             self.attachEvents()
             self.dispatcherClient.start()
@@ -581,8 +580,10 @@ class StartingEvent:
 
     def attachEvents(self):
         smokesignal.clear()
+        print "attached"
         @smokesignal.on("starting")
         def onStarting(args):
+            print args
             item = eval(args.get('payload'))
             self.x = float(item["x"])/100
             self.y = float(item["y"])/100
