@@ -314,7 +314,7 @@ class CrunchClass:
 
         self.clear_all()
 
-        if len(r_arr) > 10:
+        if len(r_arr) > 3:
 
             #print "DATA MORE THAN 10"
             #print get_time()
