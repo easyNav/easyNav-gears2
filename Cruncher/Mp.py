@@ -440,10 +440,6 @@ class RequestClass:
 
     def post_heartbeat_location(self, x, y, z, ang):
 
-        # Joel Hack
-        if ang > 180:
-            ang = ang - 360
-
         payload = { "x": x, "y": y, "z": z, "orientation": ang/180.*np.pi }
         r = requests.post(self.endpoint + "heartbeat/location", data=payload)
         return r.json()
@@ -458,6 +454,12 @@ class PositionClass:
 
     # constr
     def __init__(self, x, y, ang):
+        self.x = x
+        self.y = y
+        self.ang = ang
+
+    def set_init(self, x, y, ang):
+        print "Starting Position Updated"
         self.x = x
         self.y = y
         self.ang = ang
@@ -490,18 +492,6 @@ def run_graph(ns):
 
     serial.close()
 
-"""
-Algorithm
-
-1. On Footrelease/Non zero, catch accel data stream
-    until Footpress/Zero
-    catch initial angle, and final angle
-2. Once we got the dataset, process it immediately
-    1. Clean data
-    2. Double integrate
-    3. Account for prev angle and final angle. do trigo
-    4. Pass datasets to graph
-"""
 
 def run_requests(ns):
     requests = RequestClass()
@@ -520,6 +510,7 @@ class AngleEvent:
     def __init__(self):
         self.dispatcherClient = DispatcherClient(port=9003)
         self.dispatcherClient.attachEvents()
+        self.dispatcherClient.start()
 
         self.angle = 0
 
@@ -528,7 +519,7 @@ class AngleEvent:
         smokesignal.clear()
         @smokesignal.on("angle")
         def onAngle(args):
-            self.angle = args["angle"]
+            self.angle = float(args["angle"])
 
 def run_angle(ns):
 
@@ -539,20 +530,51 @@ def run_angle(ns):
         angle = angle_event.angle()
 
         shifted_angle = angle - 60
-        if (shifted_angle < 0):
-            shifted_angle = 360 + shifted_angle
+        shifted_angle = shifted_angle + 180
 
         ns.yaw = shifted_angle
 
+# Angle class
+class StartingEvent:
+
+    # constr
+    def __init__(self):
+        self.dispatcherClient = DispatcherClient(port=9003)
+        self.dispatcherClient.attachEvents()
+        self.dispatcherClient.start()
+
+        self.x = 0
+        self.y = 0
+        self.available = 0
+
+    def available(self):
+        if self.available == 1:
+            self.available = 0
+            return 1
+        else:
+            return 0
+
+
+    def attachEvents(self):
+        smokesignal.clear()
+        @smokesignal.on("starting")
+        def onStarting(args):
+            self.x = float(args["x"])
+            self.y = float(args["y"])
+            self.available = 1
+
+
 if __name__ == '__main__':
 
-    # Classes
+    # Serial Ports
     serial_port = "/dev/tty.usbserial-A600dRYL"
     #serial_port = "/dev/ttyUSB0"
     serialAccel = SerialAccel(serial_port)
 
+    # Crunch, Position and Starting classes
     crunch = CrunchClass()
-    position = PositionClass(14.20, 14.40, 180)
+    starting_event = StartingEvent()
+    position = PositionClass(0, 0, 0)
 
     # Mp Manager
     manager = multiprocessing.Manager()
@@ -583,16 +605,16 @@ if __name__ == '__main__':
     # Serial Loop
     while(1):
 
-        #print "A"
-        serialAccel.read()
-        #print "B"
+        # Check for change in start pos
+        if starting_event.available():
+            position.set_init(starting_event.x, starting_event.y, ns.yaw)
 
-        #print "ACCEL"
+        # Read Accel data
+        serialAccel.read()
 
         if(serialAccel.on_ground == 0):
             crunch.add(serialAccel.mag, serialAccel.ms, ns.yaw)
         else:
-            #print "ON_GROUND"
             data_obj = crunch.process()
             if data_obj != None:
                 ns.raw_arr = data_obj.raw_arr
