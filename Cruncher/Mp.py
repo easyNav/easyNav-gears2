@@ -538,7 +538,8 @@ class AngleEvent:
         smokesignal.clear()
         @smokesignal.on("angle")
         def onAngle(args):
-            self.angle = float(args["angle"])
+            item = eval(args.get('payload'))
+            self.angle = float(item["angle"])
 
 def run_angle(ns):
 
@@ -581,8 +582,9 @@ class StartingEvent:
         smokesignal.clear()
         @smokesignal.on("starting")
         def onStarting(args):
-            self.x = float(args["x"])/100
-            self.y = float(args["y"])/100
+            item = eval(args.get('payload'))
+            self.x = float(item["x"])/100
+            self.y = float(item["y"])/100
             self.av = 1
 
 
@@ -609,7 +611,7 @@ if __name__ == '__main__':
 
     # Serial Ports
     if ns.device == "pi":
-        serial_port = "/dev/ttyUSB1"
+        serial_port = "/dev/ttyUSB2"
     elif ns.device == "mac":
         serial_port = "/dev/tty.usbserial-A600dRYL"
     serialAccel = SerialAccel(serial_port)
