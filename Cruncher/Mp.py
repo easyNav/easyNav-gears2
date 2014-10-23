@@ -462,7 +462,7 @@ class PositionClass:
         self.ang = ang
 
     def set_init(self, x, y, ang):
-        print "Starting Position Updated"
+        print "Starting Position Updated: " + str(x) + "," + str(y) 
         self.x = x
         self.y = y
         self.ang = ang
@@ -562,8 +562,8 @@ class StartingEvent:
         smokesignal.clear()
         @smokesignal.on("starting")
         def onStarting(args):
-            self.x = float(args["x"])
-            self.y = float(args["y"])
+            self.x = float(args["x"])/100
+            self.y = float(args["y"])/100
             self.available = 1
 
 
