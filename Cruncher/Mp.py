@@ -606,7 +606,7 @@ if __name__ == '__main__':
     while(1):
 
         # Check for change in start pos
-        if starting_event.available():
+        if starting_event.available() == 1:
             position.set_init(starting_event.x, starting_event.y, ns.yaw)
 
         # Read Accel data
