@@ -1,19 +1,24 @@
-
+# Imports
 import serial
-#import matplotlib.pyplot as plt
 import numpy as np
 import time
 import multiprocessing
 import requests
 import json
-from collections import deque
 import math
+import sys
+from collections import deque
 
-try:
+# Device Types
+device = sys.argv[1]
+if device == "mac":
+    import matplotlib.pyplot as plt
+elif device == "pi":
     from easyNav_pi_dispatcher import DispatcherClient
     import smokesignal
-except:
-    print "NO SMOKE"
+else:
+    print "No device type entered"
+    sys.exit()
 
 
 def get_time():
@@ -341,8 +346,8 @@ class CrunchClass:
             vel_kal_arr = self.integrate(posteri_estimate_graph, m_arr)
             dist_kal_arr = self.integrate(vel_kal_arr, m_arr)
 
-            total_smoothed = self.sumArr(dist_smoothed_arr)*5
-            total_kal = self.sumArr(dist_kal_arr)*5
+            total_smoothed = self.sumArr(dist_smoothed_arr)*7
+            total_kal = self.sumArr(dist_kal_arr)*7
             avg = (total_smoothed+total_kal)/2
 
 
@@ -431,9 +436,10 @@ class CrunchClass:
 class RequestClass:
 
     # constr
-    def __init__(self):
+    def __init__(self, local_mode = 1):
         self.remote = "http://192.249.57.162:1337/"
         self.local =  "http://localhost:1337/"
+        self.local_mode = local_mode
 
     def get_heartbeat(self):
         r = requests.get(self.local + "heartbeat")
@@ -442,13 +448,15 @@ class RequestClass:
     def post_heartbeat_location(self, x, y, z, ang):
 
         payload = { "x": x, "y": y, "z": z, "orientation": ang/180.*np.pi }
-        r = requests.post(self.local + "heartbeat/location", data=payload)
+        if self.local_mode == 1:
+            r = requests.post(self.local + "heartbeat/location", data=payload)
         r = requests.post(self.remote + "heartbeat/location", data=payload)
         return r.json()
 
     def post_heartbeat_sonar(self, name, distance):
         payload = { "distance" : distance }
-        r = requests.post(self.local + "heartbeat/sonar/" + name, data=payload)
+        if self.local_mode == 1:
+            r = requests.post(self.local + "heartbeat/sonar/" + name, data=payload)
         r = requests.post(self.remote + "heartbeat/sonar/" + name, data=payload)
         return r.json()
 
@@ -477,10 +485,14 @@ class PositionClass:
         self.ang = ang
 
     def print_all(self):
-        print "X: " + str(self.x) + "Y: " + str(self.y) + "ANG: " + str(self.ang)
+        print "X: " + str(self.x) + " Y: " + str(self.y) + " ANG: " + str(self.ang)
 
 
 def run_graph(ns):
+
+    if ns.device == "pi":
+        return
+
     graph = GraphClass()
 
     while(1):
@@ -497,13 +509,17 @@ def run_graph(ns):
 
 
 def run_requests(ns):
-    requests = RequestClass()
+
+    mode = 0
+    if ns.device == "pi":
+        mode = 1
+    elif ns.device == "mac":
+        mode = 0
+
+    requests = RequestClass(local_mode=mode)
 
     while(1):
-        time.sleep(0.1)
-        # Convert angle to radians
         data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
-        #print data
 
 
 # Angle class
@@ -526,6 +542,9 @@ class AngleEvent:
 
 def run_angle(ns):
 
+    if ns.device == "mac":
+        return
+
     angle_event = AngleEvent()
 
     while(1):
@@ -541,10 +560,11 @@ def run_angle(ns):
 class StartingEvent:
 
     # constr
-    def __init__(self):
-        self.dispatcherClient = DispatcherClient(port=9003)
-        self.attachEvents()
-        self.dispatcherClient.start()
+    def __init__(self, device):
+        if device == "pi":
+            self.dispatcherClient = DispatcherClient(port=9003)
+            self.attachEvents()
+            self.dispatcherClient.start()
 
         self.x = 0
         self.y = 0
@@ -557,7 +577,6 @@ class StartingEvent:
         else:
             return 0
 
-
     def attachEvents(self):
         smokesignal.clear()
         @smokesignal.on("starting")
@@ -568,16 +587,6 @@ class StartingEvent:
 
 
 if __name__ == '__main__':
-
-    # Serial Ports
-    #serial_port = "/dev/tty.usbserial-A600dRYL"
-    serial_port = "/dev/ttyUSB0"
-    serialAccel = SerialAccel(serial_port)
-
-    # Crunch, Position and Starting classes
-    crunch = CrunchClass()
-    starting_event = StartingEvent()
-    position = PositionClass(0, 0, 0)
 
     # Mp Manager
     manager = multiprocessing.Manager()
@@ -596,10 +605,23 @@ if __name__ == '__main__':
     ns.yaw = 0
     ns.total = 0
     ns.ping = 0
+    ns.device = device
+
+    # Serial Ports
+    if ns.device == "pi":
+        serial_port = "/dev/ttyUSB0"
+    elif ns.device == "mac":
+        serial_port = "/dev/tty.usbserial-A600dRYL"
+    serialAccel = SerialAccel(serial_port)
+
+    # Crunch, Position and Starting classes
+    crunch = CrunchClass()
+    starting_event = StartingEvent(device)
+    position = PositionClass(0, 0, 0)
 
     # Mp
-    #p1 = multiprocessing.Process(target=run_graph, args=(ns,))
-    #p1.start()
+    p1 = multiprocessing.Process(target=run_graph, args=(ns,))
+    p1.start()
     p2 = multiprocessing.Process(target=run_requests, args=(ns,))
     p2.start()
     p3 = multiprocessing.Process(target=run_angle, args=(ns,))
@@ -635,7 +657,7 @@ if __name__ == '__main__':
                 ns.x = position.x
                 ns.y = position.y
 
-    #p1.join()
+    p1.join()
     p2.join()
     p3.join()
     print 'after', ns
