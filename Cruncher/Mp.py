@@ -432,21 +432,24 @@ class RequestClass:
 
     # constr
     def __init__(self):
-        self.endpoint = "http://192.249.57.162:1337/"
+        self.remote = "http://192.249.57.162:1337/"
+        self.local =  "http://localhost:1337/"
 
     def get_heartbeat(self):
-        r = requests.get(self.endpoint + "heartbeat")
+        r = requests.get(self.local + "heartbeat")
         return r.json()
 
     def post_heartbeat_location(self, x, y, z, ang):
 
         payload = { "x": x, "y": y, "z": z, "orientation": ang/180.*np.pi }
-        r = requests.post(self.endpoint + "heartbeat/location", data=payload)
+        r = requests.post(self.local + "heartbeat/location", data=payload)
+        r = requests.post(self.remote + "heartbeat/location", data=payload)
         return r.json()
 
     def post_heartbeat_sonar(self, name, distance):
         payload = { "distance" : distance }
-        r = requests.post(self.endpoint + "heartbeat/sonar/" + name, data=payload)
+        r = requests.post(self.local + "heartbeat/sonar/" + name, data=payload)
+        r = requests.post(self.remote + "heartbeat/sonar/" + name, data=payload)
         return r.json()
 
 # Position class
@@ -527,7 +530,7 @@ def run_angle(ns):
 
     while(1):
 
-        angle = angle_event.angle()
+        angle = angle_event.angle
 
         shifted_angle = angle - 60
         shifted_angle = shifted_angle + 180
