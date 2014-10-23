@@ -540,7 +540,6 @@ class AngleEvent:
         def onAngle(args):
             item = eval(args.get('payload'))
             self.angle = float(item["angle"])
-            print self.angle
 
 def run_angle(ns):
 
