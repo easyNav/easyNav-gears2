@@ -314,7 +314,23 @@ class CrunchClass:
 
         self.clear_all()
 
-        if len(r_arr) > 10:
+        # Stage to add in extra data
+        # expand_rarr = []
+        # for i, item in enumerate(r_arr):
+        #     if i < (len(r_arr)-1):
+        #         curr = r_arr[i]
+        #         next = r_arr[i+1]
+        #         avg = (curr+next)/2
+        #         expand_rarr.append(curr)
+        #         expand_rarr.append(avg)
+        # r_arr = expand_rarr
+        # expand_marr = []
+        # for i, item in enumerate(m_arr):
+        #     expand_marr.append(item)
+        #     expand_marr.append(item)
+        # m_arr = expand_marr
+
+        if len(r_arr) > 3:
 
             #print "DATA MORE THAN 10"
             #print get_time()
@@ -335,7 +351,7 @@ class CrunchClass:
             Smoothing
             """
             Smoother = SmoothClass()
-            smoothed_arr = Smoother.smooth( np.array(r_arr) ,10,'blackman')
+            smoothed_arr = Smoother.smooth( np.array(r_arr) ,3,'blackman')
 
             """
             Integral
@@ -346,8 +362,8 @@ class CrunchClass:
             vel_kal_arr = self.integrate(posteri_estimate_graph, m_arr)
             dist_kal_arr = self.integrate(vel_kal_arr, m_arr)
 
-            total_smoothed = self.sumArr(dist_smoothed_arr)*7
-            total_kal = self.sumArr(dist_kal_arr)*7
+            total_smoothed = self.sumArr(dist_smoothed_arr)*5
+            total_kal = self.sumArr(dist_kal_arr)*5
             avg = (total_smoothed+total_kal)/2
 
 
@@ -626,13 +642,6 @@ if __name__ == '__main__':
     ns.starty = 0
     ns.ping_start = 0
 
-    # Serial Ports
-    if ns.device == "pi":
-        serial_port = "/dev/ttyUSB0"
-    elif ns.device == "mac":
-        serial_port = "/dev/tty.usbserial-A600dRYL"
-    serialAccel = SerialAccel(serial_port)
-
     # Crunch, Position and Starting classes
     crunch = CrunchClass()
     position = PositionClass(0, 0, 0)
@@ -647,6 +656,13 @@ if __name__ == '__main__':
     p4 = multiprocessing.Process(target=run_starting, args=(ns,))
     p4.start()
 
+    # Serial Ports
+    if ns.device == "pi":
+        serial_port = "/dev/ttyUSB0"
+    elif ns.device == "mac":
+        serial_port = "/dev/tty.usbserial-A600dRYL"
+    serialAccel = SerialAccel(serial_port)
+
     # Serial Loop
     while(1):
 
@@ -657,10 +673,11 @@ if __name__ == '__main__':
             position.set_init(ns.startx, ns.starty, ns.yaw)
 
         # Read Accel data
+        curr_time = get_time()
         serialAccel.read()
 
         if(serialAccel.on_ground == 0):
-            crunch.add(serialAccel.mag, serialAccel.ms, ns.yaw)
+            crunch.add(serialAccel.mag, get_time() - curr_time, ns.yaw)
         else:
             data_obj = crunch.process()
             if data_obj != None:
