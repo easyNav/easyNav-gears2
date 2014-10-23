@@ -563,6 +563,7 @@ class StartingEvent:
     # constr
     def __init__(self, device):
         if device == "pi":
+            print "attached"
             self.dispatcherClient = DispatcherClient(port=9003)
             self.attachEvents()
             self.dispatcherClient.start()
@@ -624,8 +625,8 @@ if __name__ == '__main__':
     # Mp
     p1 = multiprocessing.Process(target=run_graph, args=(ns,))
     p1.start()
-    p2 = multiprocessing.Process(target=run_requests, args=(ns,))
-    p2.start()
+    #p2 = multiprocessing.Process(target=run_requests, args=(ns,))
+    #p2.start()
     p3 = multiprocessing.Process(target=run_angle, args=(ns,))
     p3.start()
 
@@ -660,6 +661,6 @@ if __name__ == '__main__':
                 ns.y = position.y
 
     p1.join()
-    p2.join()
+    #p2.join()
     p3.join()
     print 'after', ns
