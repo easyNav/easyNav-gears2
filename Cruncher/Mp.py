@@ -635,7 +635,6 @@ if __name__ == '__main__':
 
     # Crunch, Position and Starting classes
     crunch = CrunchClass()
-    starting_event = StartingEvent(device)
     position = PositionClass(0, 0, 0)
 
     # Mp
