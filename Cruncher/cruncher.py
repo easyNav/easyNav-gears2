@@ -515,8 +515,8 @@ def run_requests(ns):
 
         data = requests.get_sem()
         if int(data["val"]) == 1:
-            ns.startx = int(data["x"])
-            ns.starty = int(data["y"])
+            ns.startx = int(data["x"])/100
+            ns.starty = int(data["y"])/100
             ns.ping_start = 1
             requests.set_sem(0)
 
