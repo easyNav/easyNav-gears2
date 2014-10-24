@@ -1,0 +1,51 @@
+img {
+    margin: 0px;
+    transition: all 400ms; 
+}
+
+/* or use CSS */
+.rotate90 {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+#gridFrame {
+    background-color: #bcc;
+    padding: 2em;
+    border-radius: 0.25em;
+}
+.grid {
+    background-color: #555;
+    border: solid 1px #344;
+    overflow: auto;
+    font-size: 10px;
+    white-space: nowrap;
+}
+.grid > div {
+    box-sizing: border-box;
+    display: inline-block;
+    border-top: solid 1px rgba(255,255,255,0.3);
+    border-left: solid 1px rgba(255,255,255,0.3);
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-size: larger;
+}
+.grid > div:hover {
+    border: solid 1px rgba(0,0,0,0.5);
+}
+
+.alt0 {    background-color: blue;    }
+.alt1 {    background-color: red;    }
+.alt2 {    background-color: green;    }
+.alt3 {    background-color: #430;    }
+.alt4 {    background-color: #540;    }
+.alt5 {    background-color: #650;    }
+.alt6 {    background-color: #761;    }
+.alt7 {    background-color: #872;    }
+.alt8 {    background-color: #873;    }
+.alt9 {    background-color: #874;    }
+.alt10 {   background-color: #875;    }
