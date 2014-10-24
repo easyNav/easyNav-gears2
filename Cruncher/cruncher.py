@@ -291,7 +291,7 @@ class CrunchClass:
             #print "DATA MORE THAN 10"
             #print get_time()
 
-            avg = self.sumAbs(d_arr)
+            avg = self.sumAbs(r_arr)
             # v_arr = self.integrate(r_arr, m_arr)
             # d_arr = self.integrate(v_arr, m_arr)
             # avg = self.sumAbs(d_arr)
