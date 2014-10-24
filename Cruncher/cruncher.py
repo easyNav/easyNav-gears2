@@ -280,7 +280,7 @@ class CrunchClass:
             expand_marr.append(item)
         m_arr = expand_marr
 
-        if len(r_arr) > 5:
+        if len(r_arr) > 3:
 
             #print "DATA MORE THAN 10"
             #print get_time()
@@ -301,7 +301,7 @@ class CrunchClass:
             Smoothing
             """
             Smoother = SmoothClass()
-            smoothed_arr = Smoother.smooth( np.array(r_arr) ,5,'blackman')
+            smoothed_arr = Smoother.smooth( np.array(r_arr) ,3,'blackman')
 
             """
             Integral
