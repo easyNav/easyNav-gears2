@@ -1,4 +1,3 @@
-/* This file is part of the Razor AHRS Firmware */
 
 // Output angles: yaw, pitch, roll
 void output_angles()
@@ -13,18 +12,51 @@ void output_angles()
   }
   else if (output_format == OUTPUT__FORMAT_TEXT)
   {
-    Serial.print("#YPRMfssT=,");
-    Serial.print(magnetom[0]); Serial.print(",");
-    Serial.print(magnetom[1]); Serial.print(",");
-    Serial.print(magnetom[2]); Serial.print(",");
-    Serial.print(Accel_magnitude); Serial.print(",");
-    Serial.print(DCM_Matrix[2][0]); Serial.print(",");
-    Serial.print(DCM_Matrix[2][1]); Serial.print(",");
-    Serial.print(DCM_Matrix[2][2]); Serial.print(",");
-    Serial.print(time_passed); Serial.print(",");
-    Serial.print(on_ground()); Serial.print(",");
-    Serial.print("1"); Serial.print(",");
-    Serial.println();
+
+    // timed_count++;
+    // if(timed_count<3){
+    //   return;
+    // }else{
+    //   timed_count = 0;
+    // }
+
+    char buffer[10];
+    //String(floatToString(test, Accel_magnitude, 0, 3));
+
+
+
+    String finalString = "," +
+    String(floatToString(buffer, Accel_magnitude , 2)) + "," +
+    String((int)on_ground()) + "," +
+    String((int)magnetom[0]) + "," +
+    String((int)magnetom[1]) + "," +
+    String((int)magnetom[2]);
+
+
+
+
+    int extrabits = 16 - finalString.length();
+    String extraString = "";
+    for(int i=0;i<extrabits;i++){
+      finalString += ",";
+    }
+
+    Serial.println(finalString);
+
+
+
+    // Serial.print("#,");
+    // Serial.print(magnetom[0]); Serial.print(",");
+    // Serial.print(magnetom[1]); Serial.print(",");
+    // Serial.print(magnetom[2]); Serial.print(",");
+    // Serial.print(Accel_magnitude); Serial.print(",");
+    // Serial.print(DCM_Matrix[2][0]); Serial.print(",");
+    // Serial.print(DCM_Matrix[2][1]); Serial.print(",");
+    // Serial.print(DCM_Matrix[2][2]); Serial.print(",");
+    // Serial.print(time_passed); Serial.print(",");
+    // Serial.print(on_ground()); Serial.print(",");
+    // Serial.print("1"); Serial.print(",");
+    // Serial.println();
   }
 }
 

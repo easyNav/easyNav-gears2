@@ -154,6 +154,8 @@
 /*********** USER SETUP AREA! Set your options here! *************/
 /*****************************************************************/
 
+#include "floatToString.h"
+
 // HARDWARE OPTIONS
 /*****************************************************************/
 // Select your hardware here by uncommenting one line!
@@ -345,6 +347,9 @@ const float magn_ellipsoid_transform[3][3] = {{0.902, -0.00354, 0.000636}, {-0.0
 #define GRAVITY 256.0f // "1G reference" used for DCM filter and accelerometer calibration
 #define TO_RAD(x) (x * 0.01745329252)  // *pi/180
 #define TO_DEG(x) (x * 57.2957795131)  // *180/pi
+
+// Timed loop output
+int timed_count = 0;
 
 // Sensor variables
 float accel[3];  // Actually stores the NEGATED acceleration (equals gravity, if board not moving).
