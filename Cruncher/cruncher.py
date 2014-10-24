@@ -256,6 +256,12 @@ class CrunchClass:
             total += arr[i]
         return total
 
+    def sumAbs(self, arr):
+        total = 0
+        for i in xrange(0, len(arr)):
+            total += abs(arr[i])
+        return total
+
     def process(self):
 
         r_arr = self.data_arr[:]
@@ -285,36 +291,38 @@ class CrunchClass:
             #print "DATA MORE THAN 10"
             #print get_time()
 
-            """
-            KalmanFilter
-            """
-            measurement_standard_deviation = np.std(r_arr)
-            process_variance = 1e-3
-            estimated_measurement_variance = measurement_standard_deviation ** 2
-            kalman_filter = KalmanFilter(process_variance, estimated_measurement_variance)
-            posteri_estimate_graph = []
-            for iteration in xrange(0, len(r_arr)):
-                kalman_filter.input_latest_noisy_measurement(r_arr[iteration])
-                posteri_estimate_graph.append(kalman_filter.get_latest_estimated_measurement())
+            avg = self.sumAbs(r_arr)
 
-            """
-            Smoothing
-            """
-            Smoother = SmoothClass()
-            smoothed_arr = Smoother.smooth( np.array(r_arr) ,3,'blackman')
+            # """
+            # KalmanFilter
+            # """
+            # measurement_standard_deviation = np.std(r_arr)
+            # process_variance = 1e-3
+            # estimated_measurement_variance = measurement_standard_deviation ** 2
+            # kalman_filter = KalmanFilter(process_variance, estimated_measurement_variance)
+            # posteri_estimate_graph = []
+            # for iteration in xrange(0, len(r_arr)):
+            #     kalman_filter.input_latest_noisy_measurement(r_arr[iteration])
+            #     posteri_estimate_graph.append(kalman_filter.get_latest_estimated_measurement())
 
-            """
-            Integral
-            """
-            vel_smoothed_arr = self.integrate(smoothed_arr, m_arr)
-            dist_smoothed_arr = self.integrate(vel_smoothed_arr, m_arr)
+            # """
+            # Smoothing
+            # """
+            # Smoother = SmoothClass()
+            # smoothed_arr = Smoother.smooth( np.array(r_arr) ,3,'blackman')
 
-            vel_kal_arr = self.integrate(posteri_estimate_graph, m_arr)
-            dist_kal_arr = self.integrate(vel_kal_arr, m_arr)
+            # """
+            # Integral
+            # """
+            # vel_smoothed_arr = self.integrate(smoothed_arr, m_arr)
+            # dist_smoothed_arr = self.integrate(vel_smoothed_arr, m_arr)
 
-            total_smoothed = self.sumArr(dist_smoothed_arr)*5
-            total_kal = self.sumArr(dist_kal_arr)*5
-            avg = (total_smoothed+total_kal)/2
+            # vel_kal_arr = self.integrate(posteri_estimate_graph, m_arr)
+            # dist_kal_arr = self.integrate(vel_kal_arr, m_arr)
+
+            # total_smoothed = self.sumArr(dist_smoothed_arr)*5
+            # total_kal = self.sumArr(dist_kal_arr)*5
+            # avg = (total_smoothed+total_kal)/2
 
 
             """
