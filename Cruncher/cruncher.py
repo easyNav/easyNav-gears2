@@ -441,15 +441,15 @@ class RequestClass:
 
     def get_sem(self):
         if self.local_mode == 1:
-            r = requests.get(self.local + "heartbeat/semaphore/")
-        r = requests.get(self.remote + "heartbeat/semaphore/")
+            r = requests.get(self.local + "heartbeat2/sm/")
+        r = requests.get(self.remote + "heartbeat2/sm/")
         return r.json()
 
     def set_sem(self, val):
         payload = { "val" : val }
         if self.local_mode == 1:
-            r = requests.post(self.local + "heartbeat/semaphore/", data=payload)
-        r = requests.post(self.remote + "heartbeat/semaphore/", data=payload)
+            r = requests.post(self.local + "heartbeat2/sm/", data=payload)
+        r = requests.post(self.remote + "heartbeat2/sm/", data=payload)
         return r.json()
 
 # Position class
