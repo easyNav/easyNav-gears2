@@ -20,8 +20,8 @@ import io
 #     c.release()
 #     return f
 
-HOST = 'localhost'
-#HOST = '54.179.156.179'
+#HOST = 'localhost'
+HOST = '54.169.47.204'
 
 def image_grabber(ns):
 
@@ -40,7 +40,7 @@ def image_grabber(ns):
             if image_processed == 1:
                 image_processed = 0
 
-                buf = cv2.imencode( '.jpg', ns.img )[1].tostring()
+                buf = cv2.imencode( '.jpg', school_img )[1].tostring()
                 buf+="FAG"
                 client_socket.send(buf)
             

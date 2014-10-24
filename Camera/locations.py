@@ -162,7 +162,7 @@ dicts=[
     "SUID": "31"
   },
   {
-    "name": "Active Learning Lab",
+    "name": "Control Room",
     "id": 88,
     "SUID": "-1"
   }
