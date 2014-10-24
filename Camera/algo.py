@@ -4,6 +4,7 @@ from pytesseract import image_to_string
 from PIL import Image
 import time
 import locations
+import json
 
 def get_text(frame):
     arr = np.array(frame)
@@ -62,6 +63,7 @@ def process_image(frame):
 
     # Texts
     texts = ""
+    match_arr = []
 
     # Image Contour
     ctr,heir = cv2.findContours(dilate,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
@@ -108,6 +110,10 @@ def process_image(frame):
         #cv2.imshow("bitwise",dst)
         #cv2.imshow("x",f)
         #time.sleep(5)
-        texts += (get_text(dst) + ",")
+        item = get_text(dst)
+        if item == None:
+            continue
+        match_arr.append(item)
 
+    texts = json.dumps(match_arr)
     return texts

@@ -20,8 +20,8 @@ import io
 #     c.release()
 #     return f
 
-#HOST = 'localhost'
-HOST = '54.169.47.204'
+HOST = 'localhost'
+#HOST = '54.169.47.204'
 
 def image_grabber(ns):
 

@@ -162,9 +162,9 @@ dicts=[
     "SUID": "31"
   },
   {
-    "name": "Control Room",
+    "name": "CONTROL ROOM",
     "id": 88,
-    "SUID": "-1"
+    "SUID": "20"
   }
 ]
 
@@ -175,6 +175,7 @@ def match_location(string):
 
     prev_percent = 0
     winner = ""
+    winner_item = None
 
     print "--------"
     print string
@@ -184,17 +185,19 @@ def match_location(string):
         name = item["name"]
         curr_percent = difflib.SequenceMatcher(None, string, name).ratio()
 
-        print name + " " + str(curr_percent)
+        #print name + " " + str(curr_percent)
 
         if curr_percent > prev_percent:
             prev_percent = curr_percent
             winner = name
-
+            winner_item = item
+            winner_item["actual"] = string
+            winner_item["percent"] = str(curr_percent)
     
-    print winner
+    print winner_item
     print "--------"
 
     if prev_percent < 0.4:
-      winner = ""
+      return None
 
-    return winner
+    return winner_item
