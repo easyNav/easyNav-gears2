@@ -291,7 +291,9 @@ class CrunchClass:
             #print "DATA MORE THAN 10"
             #print get_time()
 
-            avg = self.sumAbs(r_arr)
+            v_arr = self.integrate(r_arr, m_arr)
+            d_arr = self.integrate(r_arr, d_arr)
+            avg = self.sumAbs(d_arr)
 
             # """
             # KalmanFilter
@@ -329,7 +331,9 @@ class CrunchClass:
             Avg
             """
 
+            print "------------"
             print "AVG: "+str(avg)
+            print "------------"
 
             # If below threshold reject
             if avg < 0.3:
@@ -541,8 +545,13 @@ def run_angle(ns):
 
         # Angle
         angle = smoke_event.angle
-        shifted_angle = angle - 60
-        shifted_angle = shifted_angle + 180
+        shifted_angle = angle - 60 + 180
+
+        if shifted_angle > 360:
+            shifted_angle = shifted_angle - 360
+        elif shifted_angle < 0:
+            shifted_angle = 360 + shifted_angle
+
         ns.yaw = shifted_angle
 
         # Mag/Ground
