@@ -219,7 +219,7 @@ $( document ).ready(function() {
         var x = $thisSquare.data("x");
         var y = $thisSquare.data("y");
 
-        $.post( "http://192.249.57.162:1337/heartbeat/semaphore", { x: x*100, y: y*100, val: 1 })
+        $.post( "http://192.249.57.162:1337/heartbeat2/sm", { x: x*100, y: y*100, val: 1 })
           .done(function( data ) {
             console.log(data);
             alert( data );
@@ -233,7 +233,7 @@ $( document ).ready(function() {
 
 
     //Timer call
-    //var myVar=setInterval(function () {myTimer()}, 3000);
+    var myVar=setInterval(function () {myTimer()}, 3000);
     function myTimer() {
 
 
@@ -245,6 +245,8 @@ $( document ).ready(function() {
             angle = loc["orientation"];
             loc = loc["loc"];
             loc = JSON.parse(loc);
+
+
             x = Math.round(parseFloat(loc.x)/100);
             y = Math.round(parseFloat(loc.y)/100);
             angle = toDegrees(angle);
