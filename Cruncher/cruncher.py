@@ -246,7 +246,7 @@ class CrunchClass:
         sum_arr = []
         int_sum = 0
         for i in xrange(0, len(arr)):
-            int_sum +=  arr[i] * (m_arr[i])
+            int_sum +=  abs(arr[i] * (m_arr[i]))
             sum_arr.append(int_sum)
         return sum_arr
 
