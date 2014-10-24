@@ -36,7 +36,7 @@ function GridClass () {
         var h = "", rowClass = "";
         var xLen = this.grid.length;
         var yLen = this.grid[0].length;
-        for (var y = 0; y < yLen; y++) {
+        for (var y = yLen-1; y >= 0; y--) {
             for (var x = 0; x < xLen; x++) {
                 var g = this.grid[x][y];
 
@@ -121,15 +121,15 @@ function GridClass () {
         var baseSize = 30;
         this.grid = [];
         for (var x = 0; x < 131; x++) {
-        var blankYArray = [];
+            var blankYArray = [];
         
-        for (var y = 0; y < 51; y++) {
-            blankYArray.push({
-                "selected" : 0,
-                "text" : "",
-                "angle" : 0
-            });
-        }
+            for (var y = 0; y < 51; y++) {
+                blankYArray.push({
+                    "selected" : 0,
+                    "text" : "",
+                    "angle" : 0
+                });
+            }
         
             this.grid.push(blankYArray);
         }
@@ -202,6 +202,14 @@ $( document ).ready(function() {
             grid.drawGrid();
 
         }
+    });
+
+    grid.$grid.on("click", "div", function(e){
+        var $thisSquare = $(this);
+        console.log("Clicked a square");
+        console.log($thisSquare);
+        var x = $thisSquare.data("x");
+        var y = $thisSquare.data("y");
     });
 
 
