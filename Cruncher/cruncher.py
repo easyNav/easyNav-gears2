@@ -495,9 +495,10 @@ def run_requests(ns):
     elif ns.device == "mac":
         mode = 0
 
-    requests = RequestClass(local_mode=mode)
+    requests = RequestClass(local_mode=0)
 
     while(1):
+        time.sleep(1)
         data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
 
 
@@ -643,8 +644,8 @@ if __name__ == '__main__':
     # Mp
     p1 = multiprocessing.Process(target=run_graph, args=(ns,))
     p1.start()
-    #p2 = multiprocessing.Process(target=run_requests, args=(ns,))
-    #p2.start()
+    p2 = multiprocessing.Process(target=run_requests, args=(ns,))
+    p2.start()
     p3 = multiprocessing.Process(target=run_angle, args=(ns,))
     p3.start()
     p4 = multiprocessing.Process(target=run_starting, args=(ns,))
@@ -687,7 +688,7 @@ if __name__ == '__main__':
         ns.ping_smoke = 0
 
     p1.join()
-    #p2.join()
+    p2.join()
     p3.join()
     p4.join()
     print 'after', ns
