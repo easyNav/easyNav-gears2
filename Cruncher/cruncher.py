@@ -357,8 +357,6 @@ class CrunchClass:
             print "--"
             print a_arr[0]
             print a_arr[-1]
-            print total_smoothed
-            print total_kal
             print avg
             print "--"
 
@@ -381,7 +379,9 @@ class CrunchClass:
             #print "PROCESSED"
             #print get_time()
 
-            return DataClass(raw=r_arr, kal=posteri_estimate_graph, smth=smoothed_arr, ang=a_arr, vel=vel_smoothed_arr, dist=dist_smoothed_arr, ms=m_arr, total=avg)
+            return DataClass(raw=[], kal=[], smth=[], ang=a_arr, vel=[], dist=[], ms=m_arr, total=avg)
+
+            #return DataClass(raw=r_arr, kal=posteri_estimate_graph, smth=smoothed_arr, ang=a_arr, vel=vel_smoothed_arr, dist=dist_smoothed_arr, ms=m_arr, total=avg)
 
         else:
             #print "DISCARD"
