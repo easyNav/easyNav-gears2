@@ -204,17 +204,36 @@ $( document ).ready(function() {
         }
     });
 
+        // def post_heartbeat_location(self, x, y, z, ang):
+
+        // payload = { "x": x, "y": y, "z": z, "orientation": ang/180.*np.pi }
+        // if self.local_mode == 1:
+        //     r = requests.post(self.local + "heartbeat/location", data=payload)
+        // r = requests.post(self.remote + "heartbeat/location", data=payload)
+        // return r.json()
+
     grid.$grid.on("click", "div", function(e){
         var $thisSquare = $(this);
         console.log("Clicked a square");
         console.log($thisSquare);
         var x = $thisSquare.data("x");
         var y = $thisSquare.data("y");
+
+        $.post( "http://192.249.57.162:1337/heartbeat/semaphore", { x: x*100, y: y*100, val: 1 })
+          .done(function( data ) {
+            console.log(data);
+            alert( data );
+        });
+
+        console.log("CLICK");
+        console.log(x);
+        console.log(y);
+
     });
 
 
     //Timer call
-    var myVar=setInterval(function () {myTimer()}, 3000);
+    //var myVar=setInterval(function () {myTimer()}, 3000);
     function myTimer() {
 
 
