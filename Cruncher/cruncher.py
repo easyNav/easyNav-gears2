@@ -292,7 +292,7 @@ class CrunchClass:
             #print get_time()
 
             v_arr = self.integrate(r_arr, m_arr)
-            d_arr = self.integrate(d_arr, m_arr)
+            d_arr = self.integrate(v_arr, m_arr)
             avg = self.sumAbs(d_arr)
 
             # """
