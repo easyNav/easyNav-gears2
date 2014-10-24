@@ -1,7 +1,17 @@
-# import requests
-# import numpy as np
+import requests
+import numpy as np
+import sys
 # import sys
 # import serial
+
+x = float(sys.argv[1])
+y = float(sys.argv[2])
+ang = float(sys.argv[3])
+
+remote = "http://192.249.57.162:1337/"
+payload = { "x": x, "y": y, "z": 0, "orientation": ang/180.*np.pi }
+r = requests.post(remote + "heartbeat/location", data=payload)
+print r.json()
 
 
 # device = sys.argv[1]
@@ -18,13 +28,3 @@
 
 # if __name__ == '__main__':
 #     print "HELLO"
-
-r_arr = [1.0,2.0,3.0,4.0,5.0,6.0]
-expand_marr = []
-
-for i, item in enumerate(r_arr):
-    expand_marr.append(item)
-    expand_marr.append(item)
-r_arr = expand_marr
-
-print r_arr
