@@ -426,7 +426,7 @@ class RequestClass:
 
     def post_heartbeat_location(self, x, y, z, ang):
 
-        payload = { "x": x, "y": y, "z": z, "orientation": ang/180.*np.pi }
+        payload = { "x": x*100, "y": y*100, "z": z, "orientation": ang/180.*np.pi }
         if self.local_mode == 1:
             r = requests.post(self.local + "heartbeat/location", data=payload)
         r = requests.post(self.remote + "heartbeat/location", data=payload)
