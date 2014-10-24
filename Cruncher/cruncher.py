@@ -265,20 +265,20 @@ class CrunchClass:
         self.clear_all()
 
         # Stage to add in extra data
-        # expand_rarr = []
-        # for i, item in enumerate(r_arr):
-        #     if i < (len(r_arr)-1):
-        #         curr = r_arr[i]
-        #         next = r_arr[i+1]
-        #         avg = (curr+next)/2
-        #         expand_rarr.append(curr)
-        #         expand_rarr.append(avg)
-        # r_arr = expand_rarr
-        # expand_marr = []
-        # for i, item in enumerate(m_arr):
-        #     expand_marr.append(item)
-        #     expand_marr.append(item)
-        # m_arr = expand_marr
+        expand_rarr = []
+        for i, item in enumerate(r_arr):
+            if i < (len(r_arr)-1):
+                curr = r_arr[i]
+                next = r_arr[i+1]
+                avg = (curr+next)/2
+                expand_rarr.append(curr)
+                expand_rarr.append(avg)
+        r_arr = expand_rarr
+        expand_marr = []
+        for i, item in enumerate(m_arr):
+            expand_marr.append(item)
+            expand_marr.append(item)
+        m_arr = expand_marr
 
         if len(r_arr) > 5:
 
