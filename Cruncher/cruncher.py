@@ -571,7 +571,7 @@ def run_angle(ns):
 
         # Angle
         angle = smoke_event.angle
-        shifted_angle = angle - 60 - 45
+        shifted_angle = angle - 60 + 90
 
         if shifted_angle > 360:
             shifted_angle = shifted_angle - 360
