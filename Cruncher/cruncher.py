@@ -428,15 +428,15 @@ class RequestClass:
 
         payload = { "x": x*100, "y": y*100, "z": z, "orientation": ang/180.*np.pi }
         if self.local_mode == 1:
-            r = requests.post(self.local + "heartbeat/location", data=payload)
-        r = requests.post(self.remote + "heartbeat/location", data=payload)
+            r = requests.post(self.local + "heartbeat/location", data=payload, timeout=2)
+        r = requests.post(self.remote + "heartbeat/location", data=payload, timeout=2)
         return r.json()
 
     def post_heartbeat_sonar(self, name, distance):
         payload = { "distance" : distance }
         if self.local_mode == 1:
-            r = requests.post(self.local + "heartbeat/sonar/" + name, data=payload)
-        r = requests.post(self.remote + "heartbeat/sonar/" + name, data=payload)
+            r = requests.post(self.local + "heartbeat/sonar/" + name, data=payload, timeout=2)
+        r = requests.post(self.remote + "heartbeat/sonar/" + name, data=payload, timeout=2)
         return r.json()
 
     def get_sem(self):
@@ -448,8 +448,8 @@ class RequestClass:
     def set_sem(self, val):
         payload = { "val" : val }
         if self.local_mode == 1:
-            r = requests.post(self.local + "heartbeat2/sm/", data=payload)
-        r = requests.post(self.remote + "heartbeat2/sm/", data=payload)
+            r = requests.post(self.local + "heartbeat2/sm/", data=payload, timeout=2)
+        r = requests.post(self.remote + "heartbeat2/sm/", data=payload, timeout=2)
         return r.json()
 
 # Position class
@@ -513,14 +513,17 @@ def run_requests(ns):
     while(1):
         time.sleep(1)
 
-        data = requests.get_sem()
-        if int(data["val"]) == 1:
-            ns.startx = int(data["x"])/100
-            ns.starty = int(data["y"])/100
-            ns.ping_start = 1
-            requests.set_sem(0)
+        try:
+            data = requests.get_sem()
+            if int(data["val"]) == 1:
+                ns.startx = int(data["x"])/100
+                ns.starty = int(data["y"])/100
+                ns.ping_start = 1
+                requests.set_sem(0)
 
-        data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
+            data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
+        except:
+            print "NETWORK ERROR"
 
 
 # Angle class
