@@ -439,6 +439,19 @@ class RequestClass:
         r = requests.post(self.remote + "heartbeat/sonar/" + name, data=payload)
         return r.json()
 
+    def get_sem(self):
+        if self.local_mode == 1:
+            r = requests.get(self.local + "heartbeat/semaphore/")
+        r = requests.get(self.remote + "heartbeat/semaphore/")
+        return r.json()
+
+    def set_sem(self, val):
+        payload = { "val" : val }
+        if self.local_mode == 1:
+            r = requests.post(self.local + "heartbeat/semaphore/", data=payload)
+        r = requests.post(self.remote + "heartbeat/semaphore/", data=payload)
+        return r.json()
+
 # Position class
 class PositionClass:
 
@@ -499,6 +512,14 @@ def run_requests(ns):
 
     while(1):
         time.sleep(1)
+
+        data = requests.get_sem()
+        if int(data["val"]) == 1:
+            ns.startx = int(data["x"])
+            ns.starty = int(data["y"])
+            ns.ping_start = 1
+            requests.set_sem(0)
+
         data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
 
 
