@@ -515,11 +515,13 @@ def run_requests(ns):
 
         try:
             data = requests.get_sem()
+            time.sleep(0.1)
             if int(data["val"]) == 1:
                 ns.startx = int(data["x"])/100
                 ns.starty = int(data["y"])/100
                 ns.ping_start = 1
                 requests.set_sem(0)
+                time.sleep(0.1)
 
             data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
         except:
