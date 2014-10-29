@@ -176,6 +176,12 @@ def run_data(ns):
 
         # Mag/Ground
         conv_distance = data_event.distance/100
+        if conv_distance > 1.2:
+            conv_distance = 1.2
+        elif (conv_distance < 0.5) and (conv_distance > 0.3):
+            conv_distance = 0.5
+        else:
+            continue
         ns.distance = conv_distance
 
         # Ping it
