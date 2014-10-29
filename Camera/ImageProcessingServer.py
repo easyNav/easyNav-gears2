@@ -117,9 +117,13 @@ class ImageProcess(object):
         while True:
              
             #Receiving from client
-            data += conn.recv(1024)
-            reply = '.'
-            if not data: 
+            try:
+                data += conn.recv(1024)
+                reply = '.'
+                if not data: 
+                    break
+            except:
+                conn.close()
                 break
          
             conn.sendall(reply)
