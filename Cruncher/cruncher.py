@@ -267,7 +267,8 @@ def run_camera(ns):
                 time.sleep(1)
                 if ns.ping_img == 1:
                     print "Transmitting image"
-                    json_response = image_client.transmit(ns.img)
+                    reponse = image_client.transmit(ns.img)
+                    json_response = json.loads(response)
                     if len(json_response) > 0:
                         found = 1
                     ns.ping_img = 0
@@ -339,10 +340,10 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
         # HACK!!
-        time.sleep(1)
-        _,f = c.read()
-        ns.img = f
-        ns.ping_img = 1
+        # time.sleep(1)
+        # _,f = c.read()
+        # ns.img = f
+        # ns.ping_img = 1
 
         # Check for change in start pos
         if ns.ping_start == 1:
