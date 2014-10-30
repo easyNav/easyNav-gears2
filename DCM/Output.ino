@@ -1,4 +1,44 @@
 
+#define SIZE 40
+int collector_index = 0;
+float collector_arr[SIZE];
+float time_arr[SIZE];
+float g_offset = 0.0;
+
+    // def integrate(self, arr, m_arr):
+    //     sum_arr = []
+    //     int_sum = 0
+    //     for i in xrange(0, len(arr)):
+    //         int_sum +=  abs(arr[i] * (m_arr[i]))
+    //         sum_arr.append(int_sum)
+    //     return sum_arr
+
+float integrate(float data_arr[], float time_arr[], float sum_arr[], int length){
+  float sum = 0;
+  for(int i=0;i<length;i++){
+    sum += data_arr[i]*(time_arr[i]*0.001);
+    sum_arr[i] = sum;
+  }
+  return sum;
+}
+
+void print_float(float val){
+  char buffer[10];
+  String finalString = 
+  String(floatToString(buffer, val , 3));
+
+  int x = finalString.length();
+  String append = "";
+  if(x<7){
+    for(int i=0;i<(7-x);i++)
+      append += "0";
+  }
+  finalString = finalString + append;
+
+  Serial.println(finalString);
+}
+
+
 // Output angles: yaw, pitch, roll
 void output_angles()
 {
@@ -13,35 +53,65 @@ void output_angles()
   else if (output_format == OUTPUT__FORMAT_TEXT)
   {
 
-    // timed_count++;
-    // if(timed_count<3){
-    //   return;
-    // }else{
-    //   timed_count = 0;
-    // }
 
-    char buffer[10];
-    //String(floatToString(test, Accel_magnitude, 0, 3));
+    // If not on ground, store Gx and increase index
+    if(!on_ground()){
 
 
+      if(collector_index >= SIZE)
+        return;
 
-    String finalString = "," +
-    String(floatToString(buffer, Accel_magnitude , 2)) + "," +
-    String((int)on_ground()) + "," +
-    String((int)magnetom[0]) + "," +
-    String((int)magnetom[1]) + "," +
-    String((int)magnetom[2]);
+      //float Gx = (DCM_Matrix[2][0] - g_offset)*9.81;
+      float Gx = (Accel_magnitude - 1.08) * 9.81;
+      collector_arr[collector_index] = Gx;
+      time_arr[collector_index] = time_passed;
+      collector_index++;
+
+    // When on ground again
+    }else{
+
+      // Store offset
+      g_offset = DCM_Matrix[2][0];
+
+      // At least 10 datasets collected
+      if(collector_index > 10){
+
+        float vel_arr[SIZE];
+        float dist_arr[SIZE];
+        integrate(collector_arr, time_arr, vel_arr, collector_index);
+        integrate(vel_arr, time_arr, dist_arr, collector_index);
+
+        // for(int i=0;i<collector_index;i++){
+        //   print_float(collector_arr[i]);
+        // }
+
+        Serial.print(",");
+        print_float(dist_arr[collector_index - 1]*1000);
 
 
-
-
-    int extrabits = 16 - finalString.length();
-    String extraString = "";
-    for(int i=0;i<extrabits;i++){
-      finalString += ",";
+        // Set index back to 0
+        collector_index = 0;
+      }
     }
 
-    Serial.println(finalString);
+    // char buffer[10];
+    // String finalString = "," +
+    // String(floatToString(buffer, Accel_magnitude , 2)) + "," +
+    // String((int)on_ground()) + "," +
+    // String((int)magnetom[0]) + "," +
+    // String((int)magnetom[1]) + "," +
+    // String((int)magnetom[2]);
+
+
+
+
+    // int extrabits = 16 - finalString.length();
+    // String extraString = "";
+    // for(int i=0;i<extrabits;i++){
+    //   finalString += ",";
+    // }
+
+    // Serial.println(finalString);
 
 
 
