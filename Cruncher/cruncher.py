@@ -110,18 +110,19 @@ def run_requests(ns):
         time.sleep(1)
 
         try:
-            data = requests.get_sem()
-            time.sleep(0.1)
-            if int(data["val"]) == 1:
-                ns.startx = int(data["x"])/100
-                ns.starty = int(data["y"])/100
-                ns.ping_start = 1
-                requests.set_sem(0)
-                time.sleep(0.1)
+            # data = requests.get_sem()
+            # time.sleep(0.1)
+            # if int(data["val"]) == 1:
+            #     ns.startx = int(data["x"])/100
+            #     ns.starty = int(data["y"])/100
+            #     ns.ping_start = 1
+            #     requests.set_sem(0)
+            #     time.sleep(0.1)
 
             data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
         except:
-            print "NETWORK ERROR"
+            print
+            #print "NETWORK ERROR"
 
 # Angle class
 class DataEvent:
@@ -259,17 +260,27 @@ def run_camera(ns):
 
         # Stream content and get response
         restart = 0
+        found = 0
+        json_response = []
         while(1):
             try:
                 time.sleep(1)
                 if ns.ping_img == 1:
                     print "Transmitting image"
-                    response = image_client.transmit(ns.img)
-                    print response
+                    json_response = image_client.transmit(ns.img)
+                    if len(json_response) > 0:
+                        found = 1
                     ns.ping_img = 0
             except:
                 restart = 1
                 break
+
+            # Something found
+            if found == 1:
+                # [{u'id': 87, u'actual': u'STAI RS', u'percent': u'0.923076923077', u'name': u'STAIRS', u'SUID': u'31'}]
+                print json_response
+                found = 0
+
         if restart == 1:
             try:
                 image_client.stop()
@@ -277,7 +288,6 @@ def run_camera(ns):
                 print
             print "Imaging stopped"
             continue
-
 
         # Close connection to server
         image_client.stop()
@@ -313,12 +323,12 @@ if __name__ == '__main__':
     position = PositionClass(0, 0, 0)
 
     # Mp
-    #p2 = multiprocessing.Process(target=run_requests, args=(ns,))
-    #p2.start()
-    #p3 = multiprocessing.Process(target=run_data, args=(ns,))
-    #p3.start()
-    #p4 = multiprocessing.Process(target=run_starting, args=(ns,))
-    #p4.start()
+    p2 = multiprocessing.Process(target=run_requests, args=(ns,))
+    p2.start()
+    p3 = multiprocessing.Process(target=run_data, args=(ns,))
+    p3.start()
+    p4 = multiprocessing.Process(target=run_starting, args=(ns,))
+    p4.start()
     p5 = multiprocessing.Process(target=run_camera, args=(ns,))
     p5.start()
 
@@ -354,9 +364,9 @@ if __name__ == '__main__':
         ns.img = f
         ns.ping_img = 1
 
-    #p2.join()
-    #p3.join()
-    #p4.join()
+    p2.join()
+    p3.join()
+    p4.join()
     p5.join()
     c.release()
     print 'after', ns

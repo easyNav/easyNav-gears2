@@ -47,7 +47,14 @@ class ImageClient(object):
                     response = recv_buffer.replace('ACK','')
                     image_processed = 1
                     recv_buffer = ""
-                    return response
+
+                    json_response = json.loads(response)
+                    final_response = []
+                    for data in json_response:
+                        if isinstance(data, basestring):
+                            continue
+                        final_response.append(data)
+                    return final_response
 
 
     def stop(self):
