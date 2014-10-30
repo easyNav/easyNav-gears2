@@ -9,13 +9,15 @@ def capture_image():
     c.release()
     return f
 
+c = cv2.VideoCapture(0)
+c.set(3,800)
+c.set(4,600)
+
 HOST = 'localhost'
 #HOST = '54.169.47.204'
 
 if __name__ == '__main__':
 
-    # Get an iamge
-    school_img = cv2.imread('school.jpg')
 
     # Open connection to server
     image_client = ImageClient('localhost',8000)
@@ -23,7 +25,8 @@ if __name__ == '__main__':
 
     # Stream content and get response
     while(1):
-        response = image_client.transmit(capture_image())
+        _,f = c.read()
+        response = image_client.transmit(f)
         print response
 
     # Close connection to server

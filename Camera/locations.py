@@ -157,7 +157,7 @@ dicts=[
     "SUID": "31"
   },
   {
-    "name": "Data Communications",
+    "name": "STAIRS",
     "id": 87,
     "SUID": "31"
   },
@@ -185,7 +185,7 @@ def match_location(string):
         name = item["name"]
         curr_percent = difflib.SequenceMatcher(None, string, name).ratio()
 
-        #print name + " " + str(curr_percent)
+        print name + " " + str(curr_percent)
 
         if curr_percent > prev_percent:
             prev_percent = curr_percent
