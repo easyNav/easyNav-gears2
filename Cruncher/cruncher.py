@@ -104,7 +104,7 @@ def run_requests(ns):
     elif ns.device == "mac":
         mode = 0
 
-    requests = RequestClass(local_mode=0)
+    requests = RequestClass(local_mode=1)
 
     while(1):
         time.sleep(1)
@@ -121,8 +121,7 @@ def run_requests(ns):
 
             data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
         except:
-            print
-            #print "NETWORK ERROR"
+            print "NETWORK ERROR"
 
 # Angle class
 class DataEvent:
