@@ -7,7 +7,9 @@ import requests
 import json
 import math
 import sys
+import cv2
 from collections import deque
+from ImageProcessingServer import ImageClient
 
 # Device Types
 device = sys.argv[1]
@@ -233,6 +235,55 @@ def run_starting(ns):
             ns.starty = starting_event.y
             ns.ping_start = 1
 
+def run_camera(ns):
+
+    HOST = 'localhost'
+    #HOST = '54.169.47.204'
+
+    while(1):
+
+        time.sleep(1)
+
+        # Open connection to server
+        image_client = ImageClient(HOST,8000)
+        try:
+            image_client.start(timeout = 10)
+            print "Connected to image server"
+        except:
+            try:
+                image_client.stop()
+            except:
+                print
+            print "Failed to connect to imaging server, trying again"
+            continue
+
+        # Stream content and get response
+        restart = 0
+        while(1):
+            try:
+                time.sleep(1)
+                if ns.ping_img == 1:
+                    print "Transmitting image"
+                    response = image_client.transmit(ns.img)
+                    print response
+                    ns.ping_img = 0
+            except:
+                restart = 1
+                break
+        if restart == 1:
+            try:
+                image_client.stop()
+            except:
+                print
+            print "Imaging stopped"
+            continue
+
+
+        # Close connection to server
+        image_client.stop()
+
+    c.release()
+
 
 if __name__ == '__main__':
 
@@ -251,22 +302,35 @@ if __name__ == '__main__':
     ns.distance = 1
     ns.ping_data = 0
 
+    # Camera Event
+    c = cv2.VideoCapture(0)
+    c.set(3,800)
+    c.set(4,600)
+    ns.img = None
+    ns.ping_img = 0
+
     # Position class
     position = PositionClass(0, 0, 0)
 
     # Mp
-    p2 = multiprocessing.Process(target=run_requests, args=(ns,))
-    p2.start()
-    p3 = multiprocessing.Process(target=run_data, args=(ns,))
-    p3.start()
-    p4 = multiprocessing.Process(target=run_starting, args=(ns,))
-    p4.start()
+    #p2 = multiprocessing.Process(target=run_requests, args=(ns,))
+    #p2.start()
+    #p3 = multiprocessing.Process(target=run_data, args=(ns,))
+    #p3.start()
+    #p4 = multiprocessing.Process(target=run_starting, args=(ns,))
+    #p4.start()
+    p5 = multiprocessing.Process(target=run_camera, args=(ns,))
+    p5.start()
 
     # Serial Loop
     while(1):
 
         # CPU usage
         time.sleep(0.1)
+
+        _,f = c.read()
+        ns.img = f
+        ns.ping_img = 1
 
         # Check for change in start pos
         if ns.ping_start == 1:
@@ -285,7 +349,14 @@ if __name__ == '__main__':
         ns.y = position.y
         ns.ping_data = 0
 
-    p2.join()
-    p3.join()
-    p4.join()
+        # Set image
+        _,f = c.read()
+        ns.img = f
+        ns.ping_img = 1
+
+    #p2.join()
+    #p3.join()
+    #p4.join()
+    p5.join()
+    c.release()
     print 'after', ns
