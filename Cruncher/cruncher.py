@@ -238,8 +238,8 @@ def run_starting(ns):
 
 def run_camera(ns):
 
-    HOST = 'localhost'
-    #HOST = '54.169.47.204'
+    #HOST = 'localhost'
+    HOST = '54.169.105.67'
 
     while(1):
 
@@ -338,6 +338,7 @@ if __name__ == '__main__':
         # CPU usage
         time.sleep(0.1)
 
+        # HACK!!
         _,f = c.read()
         ns.img = f
         ns.ping_img = 1
