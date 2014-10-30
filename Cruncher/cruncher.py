@@ -45,8 +45,8 @@ class RequestClass:
         payload = { "x": x*100, "y": y*100, "z": z, "orientation": ang/180.*np.pi }
         if self.local_mode == 1:
             r = requests.post(self.local + "heartbeat/location", data=payload, timeout=2)
-        r = requests.post(self.remote + "heartbeat/location", data=payload, timeout=2)
-        return r.json()
+        #r = requests.post(self.remote + "heartbeat/location", data=payload, timeout=2)
+        #return r.json()
 
     def post_heartbeat_sonar(self, name, distance):
         payload = { "distance" : distance }
@@ -104,7 +104,7 @@ def run_requests(ns):
     elif ns.device == "mac":
         mode = 0
 
-    requests = RequestClass(local_mode=1)
+    requests = RequestClass(local_mode=mode)
 
     while(1):
         time.sleep(1)
@@ -118,10 +118,10 @@ def run_requests(ns):
             #     ns.ping_start = 1
             #     requests.set_sem(0)
             #     time.sleep(0.1)
-
+            #print ns.x
             data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
-        except:
-            print "NETWORK ERROR"
+        except Exception as ex:
+            print ex
 
 # Angle class
 class DataEvent:
@@ -308,6 +308,8 @@ if __name__ == '__main__':
     ns.ping_start = 0
 
     # Data Event
+    ns.x = 0
+    ns.y = 0
     ns.yaw = 0
     ns.distance = 1
     ns.ping_data = 0
