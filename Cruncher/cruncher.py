@@ -329,8 +329,8 @@ if __name__ == '__main__':
     position = PositionClass(0, 0, 0)
 
     # Mp
-    #p2 = multiprocessing.Process(target=run_requests, args=(ns,))
-    #p2.start()
+    p2 = multiprocessing.Process(target=run_requests, args=(ns,))
+    p2.start()
     p3 = multiprocessing.Process(target=run_data, args=(ns,))
     p3.start()
     p4 = multiprocessing.Process(target=run_starting, args=(ns,))
@@ -373,7 +373,7 @@ if __name__ == '__main__':
         ns.img = f
         ns.ping_img = 1
 
-    #p2.join()
+    p2.join()
     p3.join()
     p4.join()
     p5.join()
