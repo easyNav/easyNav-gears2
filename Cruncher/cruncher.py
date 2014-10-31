@@ -268,7 +268,7 @@ def run_camera(ns):
 
                 if ns.ping_img == 1:
                     print "Transmitting image"
-                    reponse = image_client.transmit(ns.img)
+                    response = image_client.transmit(ns.img)
                     json_response = json.loads(response)
                     if len(json_response) > 0:
                         found = 1
