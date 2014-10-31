@@ -263,7 +263,9 @@ def run_camera(ns):
         json_response = []
         while(1):
             try:
+                print "Image sleep"
                 time.sleep(1)
+
                 if ns.ping_img == 1:
                     print "Transmitting image"
                     reponse = image_client.transmit(ns.img)
@@ -357,6 +359,7 @@ if __name__ == '__main__':
             continue
 
         # New data is available
+        print "DISTANCE: "+ str(ns.distance) + " ANGLE: " + str(ns.yaw)
         position.set_pos(ns.distance, ns.yaw)
         position.print_all()
         ns.x = position.x
