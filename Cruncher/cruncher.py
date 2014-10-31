@@ -273,7 +273,8 @@ def run_camera(ns):
                     if len(json_response) > 0:
                         found = 1
                     ns.ping_img = 0
-            except:
+            except Exception, e:
+                print str(e)
                 restart = 1
                 break
 
