@@ -124,9 +124,11 @@ class ImageProcess(object):
                 data += conn.recv(1024)
                 reply = ''
                 if not data: 
+                    print "Connection closed not data"
                     break
             except:
                 conn.close()
+                print "Connection closed error"
                 break
          
             conn.sendall(reply)
@@ -143,6 +145,7 @@ class ImageProcess(object):
                 conn.sendall(response+"ACK")
          
         #came out of loop
+        print "Disconnected"
         conn.close()
 
     # Static method for starting an instance of image server
