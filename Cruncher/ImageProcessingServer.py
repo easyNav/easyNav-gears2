@@ -21,7 +21,7 @@ class ImageClient(object):
 
     def start(self, timeout = 10):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.settimeout(timeout)
+        #self.client_socket.settimeout(timeout)
         self.client_socket.connect((self.host, self.port))
 
     def transmit(self, img):
