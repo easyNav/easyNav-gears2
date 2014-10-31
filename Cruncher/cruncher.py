@@ -182,8 +182,9 @@ def run_data(ns):
             conv_distance = 1.2
         elif (conv_distance < 0.5) and (conv_distance > 0.3):
             conv_distance = 0.5
-        else:
+        elif (conv_distance < 0.3):
             continue
+
         ns.distance = conv_distance
 
         # Ping it
