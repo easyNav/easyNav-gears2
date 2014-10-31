@@ -116,6 +116,8 @@ class ImageProcess(object):
 
         #infinite loop so that function do not terminate and thread do not end.
         while True:
+
+            print "receiving"
             
             #Receiving from client
             try:
