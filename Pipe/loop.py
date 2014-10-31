@@ -1,11 +1,7 @@
+import printflush
 import time
-import sys
-
-def printstream(x):
-    sys.stdout.flush()
-    print x
 
 while(1):
-    printstream("x")
+    printflush.printstream("a")
     time.sleep(0.1)
     

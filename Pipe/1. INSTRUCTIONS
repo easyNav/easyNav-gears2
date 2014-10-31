@@ -1,0 +1,10 @@
+1. INSTRUCTIONS
+
+
+1. Run "sudo python install.py"
+2. Testing
+    python loop.py | python pipe.py send cruncher
+3. Listening
+    python pipe.py listen cruncher
+
+You need to use printflush.printstream("message")
