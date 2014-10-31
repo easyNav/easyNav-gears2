@@ -87,7 +87,7 @@ class ImageProcess(object):
         while(1):
             try:
                 conn, addr = self.s.accept()
-                conn.settimeout(5)
+                #conn.settimeout(5)
                 print 'Connected with ' + addr[0] + ':' + str(addr[1])
                 start_new_thread(self.thread_process ,(conn,))
             except Exception, e:
