@@ -126,9 +126,9 @@ class ImageProcess(object):
                 if not data: 
                     print "Connection closed not data"
                     break
-            except:
+            except Exception, e:
                 conn.close()
-                print "Connection closed error"
+                print str(e)
                 break
          
             conn.sendall(reply)
