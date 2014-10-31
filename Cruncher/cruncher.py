@@ -43,10 +43,10 @@ class RequestClass:
     def post_heartbeat_location(self, x, y, z, ang):
 
         payload = { "x": x*100, "y": y*100, "z": z, "orientation": ang/180.*np.pi }
-        if self.local_mode == 1:
-            r = requests.post(self.local + "heartbeat/location", data=payload, timeout=2)
-        #r = requests.post(self.remote + "heartbeat/location", data=payload, timeout=2)
-        #return r.json()
+        # if self.local_mode == 1:
+        #     r = requests.post(self.local + "heartbeat/location", data=payload, timeout=2)
+        r = requests.post(self.remote + "heartbeat/location", data=payload, timeout=2)
+        return r.json()
 
     def post_heartbeat_sonar(self, name, distance):
         payload = { "distance" : distance }
@@ -102,24 +102,18 @@ def run_requests(ns):
     if ns.device == "pi":
         mode = 1
     elif ns.device == "mac":
-        mode = 0
+        return
 
-    requests = RequestClass(local_mode=mode)
+    requests = RequestClass()
+    dc = DispatcherClient(port=9003)
+    dc.start()
 
     while(1):
         time.sleep(1)
 
         try:
-            # data = requests.get_sem()
-            # time.sleep(0.1)
-            # if int(data["val"]) == 1:
-            #     ns.startx = int(data["x"])/100
-            #     ns.starty = int(data["y"])/100
-            #     ns.ping_start = 1
-            #     requests.set_sem(0)
-            #     time.sleep(0.1)
-            #print ns.x
-            data = requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
+            dc.send(9001, 'point', {"x":ns.x, "y":ns.y, "z":0, "ang":ns.yaw})
+            requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
         except Exception as ex:
             print ex
 
