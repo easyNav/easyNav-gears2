@@ -1,8 +1,11 @@
 import time
 import sys
 
-while(1):
+def printstream(x):
     sys.stdout.flush()
-    print "hello"
+    print x
+
+while(1):
+    printstream("x")
     time.sleep(0.1)
     
