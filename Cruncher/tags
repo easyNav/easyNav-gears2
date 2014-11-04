@@ -1,0 +1,4 @@
+exit	cruncher.py	/^    sys.exit()$/
+post	cruncher.py	/^        r = requests.post(self.remote + "heartbeat/
+post_heartbeat_location	cruncher.py	/^            requests.post_heartbeat_location(ns.x,/
+stop	cruncher.py	/^                image_client.stop()$/

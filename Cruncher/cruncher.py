@@ -247,8 +247,8 @@ def run_camera(ns):
         except:
             try:
                 image_client.stop()
-            except:
-                print
+            except Exception, e:
+                print str(e)
             print "Failed to connect to imaging server, trying again"
             continue
 
@@ -258,7 +258,7 @@ def run_camera(ns):
         json_response = []
         while(1):
             try:
-                print "Image sleep"
+                #print "Image sleep"
                 time.sleep(1)
 
                 if ns.ping_img == 1:
@@ -282,8 +282,8 @@ def run_camera(ns):
         if restart == 1:
             try:
                 image_client.stop()
-            except:
-                print
+            except Exception, e:
+                print str(e)
             print "Imaging stopped"
             continue
 
