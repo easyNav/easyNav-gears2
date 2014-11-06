@@ -8,6 +8,7 @@ import json
 import math
 import sys
 import cv2
+import cv2.cv as cv
 from collections import deque
 from ImageProcessingServer import ImageClient
 
@@ -248,7 +249,7 @@ def run_camera(ns):
         # Open connection to server
         image_client = ImageClient(HOST,8000)
         try:
-            image_client.start(timeout = 10)
+            image_client.start(timeout = 2000)
             print "Connected to image server"
         except:
             try:
@@ -300,7 +301,6 @@ def run_camera(ns):
 
     c.release()
 
-
 if __name__ == '__main__':
 
     # Mp Manager
@@ -321,7 +321,7 @@ if __name__ == '__main__':
     ns.ping_data = 0
 
     # Camera Event
-    c = cv2.VideoCapture(0)
+    c = cv.CaptureFromCAM(0)
     c.set(3,800)
     c.set(4,600)
     ns.img = None
@@ -371,11 +371,14 @@ if __name__ == '__main__':
         ns.ping_data = 0
 
         # Set image
+        ns.img = None
+        _,f = c.read()
+        _,f = c.read()
+        _,f = c.read()
+        _,f = c.read()
         _,f = c.read()
         print "NEW IMAGE WRITTEN"
-        ns.img = None
         ns.img = f
-
         time.sleep(0.1)
         ns.ping_img = 1
 
