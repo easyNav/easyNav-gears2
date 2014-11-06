@@ -347,14 +347,14 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
         # HACK!!
-        time.sleep(4)
-        _,f = c.read()
-        _,f = c.read()
-        _,f = c.read()
-        _,f = c.read()
-        _,f = c.read()
-        ns.img = f
-        ns.ping_img = 1
+        # time.sleep(4)
+        # _,f = c.read()
+        # _,f = c.read()
+        # _,f = c.read()
+        # _,f = c.read()
+        # _,f = c.read()
+        # ns.img = f
+        # ns.ping_img = 1
 
         # Check for change in start pos
         if ns.ping_start == 1:
@@ -375,16 +375,17 @@ if __name__ == '__main__':
         ns.ping_data = 0
 
         # Set image
-        ns.img = None
-        _,f = c.read()
-        _,f = c.read()
-        _,f = c.read()
-        _,f = c.read()
-        _,f = c.read()
-        print "NEW IMAGE WRITTEN"
-        ns.img = f
-        time.sleep(0.1)
-        ns.ping_img = 1
+        while(1):
+            time.sleep(0.1)
+            _,f = c.read()
+            if np.array_equal(f,ns.img) == True:
+                print "Same image"
+                continue
+            else:
+                print "NEW IMAGE WRITTEN"
+                ns.img = f
+                ns.ping_img = 1
+                break
 
     p2.join()
     p3.join()
