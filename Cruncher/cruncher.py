@@ -266,21 +266,20 @@ def run_camera(ns):
         while(1):
             try:
                 #print "Image sleep"
-                time.sleep(5)
-
-                # Try capturing an image
-                c = cv2.VideoCapture(0)
-                c.set(3,800)
-                c.set(4,600)
-                #time.sleep(1)
-                _,f = c.read()
-                print "NEW IMAGE"
-                ns.img = f
-                ns.ping_img = 1
-                #time.sleep(1)
-                c.release()
+                time.sleep(1)
 
                 if ns.ping_img == 1:
+
+
+                    # Try capturing an image
+                    c = cv2.VideoCapture(0)
+                    c.set(3,800)
+                    c.set(4,600)
+                    _,f = c.read()
+                    print "NEW IMAGE"
+                    ns.img = f
+                    c.release()
+
                     print "Transmitting image"
                     response = image_client.transmit(ns.img)
                     print "Transmission done"
@@ -403,5 +402,5 @@ if __name__ == '__main__':
     p3.join()
     p4.join()
     p5.join()
-    #c.release()
+    c.release()
     print 'after', ns
