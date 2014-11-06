@@ -116,7 +116,7 @@ def run_requests(ns):
 
         try:
             elapsed = get_time()
-            dc.send(9001, 'point', {"x":ns.x, "y":ns.y, "z":0, "ang":ns.yaw})
+            dc.send(9001, 'point', {"x":ns.x*100, "y":ns.y*100, "z":0, "ang":ns.yaw/180.*np.pi})
 
             if elapsed-curr > 5000:
                 curr = get_time()
