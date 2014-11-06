@@ -117,7 +117,7 @@ def run_requests(ns):
             elapsed = get_time()
             dc.send(9001, 'point', {"x":ns.x, "y":ns.y, "z":0, "ang":ns.yaw})
 
-            if elapsed-cur > 5000:
+            if elapsed-curr > 5000:
                 curr = get_time()
                 requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
         except Exception as ex:
