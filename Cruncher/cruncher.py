@@ -108,12 +108,18 @@ def run_requests(ns):
     dc = DispatcherClient(port=9003)
     dc.start()
 
+    curr = get_time()
+
     while(1):
-        time.sleep(1)
+        time.sleep(0.1)
 
         try:
+            elapsed = get_time()
             dc.send(9001, 'point', {"x":ns.x, "y":ns.y, "z":0, "ang":ns.yaw})
-            requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
+
+            if elapsed-cur > 5000:
+                curr = get_time()
+                requests.post_heartbeat_location(ns.x, ns.y, 0, ns.yaw)
         except Exception as ex:
             print ex
 
