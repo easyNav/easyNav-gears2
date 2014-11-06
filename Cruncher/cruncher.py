@@ -266,7 +266,19 @@ def run_camera(ns):
         while(1):
             try:
                 #print "Image sleep"
-                time.sleep(1)
+                time.sleep(5)
+
+                # Try capturing an image
+                c = cv2.VideoCapture(0)
+                c.set(3,800)
+                c.set(4,600)
+                #time.sleep(1)
+                _,f = c.read()
+                print "NEW IMAGE"
+                ns.img = f
+                ns.ping_img = 1
+                #time.sleep(1)
+                c.release()
 
                 if ns.ping_img == 1:
                     print "Transmitting image"
@@ -297,8 +309,6 @@ def run_camera(ns):
 
         # Close connection to server
         image_client.stop()
-
-    c.release()
 
 
 if __name__ == '__main__':
@@ -378,20 +388,20 @@ if __name__ == '__main__':
         ns.ping_data = 0
 
         # Set image
-        c = cv2.VideoCapture(0)
-        c.set(3,800)
-        c.set(4,600)
-        #time.sleep(1)
-        _,f = c.read()
-        print "NEW IMAGE"
-        ns.img = f
-        ns.ping_img = 1
-        #time.sleep(1)
-        c.release()
+        # c = cv2.VideoCapture(0)
+        # c.set(3,800)
+        # c.set(4,600)
+        # #time.sleep(1)
+        # _,f = c.read()
+        # print "NEW IMAGE"
+        # ns.img = f
+        # ns.ping_img = 1
+        # #time.sleep(1)
+        # c.release()
 
     p2.join()
     p3.join()
     p4.join()
     p5.join()
-    c.release()
+    #c.release()
     print 'after', ns
