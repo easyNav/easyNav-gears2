@@ -372,6 +372,8 @@ if __name__ == '__main__':
         if ns.ping_start == 1:
             print "Starting data received: " + str(ns.startx) + " " + str(ns.starty)
             ns.ping_start = 0
+            ns.x = ns.startx
+            ns.y = ns.starty
             position.set_init(ns.startx, ns.starty, ns.yaw)
 
         # If no new data, continue
