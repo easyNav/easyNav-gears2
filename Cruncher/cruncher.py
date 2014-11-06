@@ -387,6 +387,7 @@ if __name__ == '__main__':
         ns.ping_data = 0
 
         # Set image
+        ns.ping_img = 1
         # c = cv2.VideoCapture(0)
         # c.set(3,800)
         # c.set(4,600)
