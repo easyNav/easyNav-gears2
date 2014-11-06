@@ -8,7 +8,6 @@ import json
 import math
 import sys
 import cv2
-import cv2.cv as cv
 from collections import deque
 from ImageProcessingServer import ImageClient
 
