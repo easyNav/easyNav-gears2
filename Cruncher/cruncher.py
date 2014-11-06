@@ -276,7 +276,6 @@ def run_camera(ns):
                     if len(json_response) > 0:
                         found = 1
                     ns.ping_img = 0
-                    ns.img = None
             except Exception, e:
                 print str(e)
                 restart = 1
@@ -373,8 +372,6 @@ if __name__ == '__main__':
 
         # Set image
         while(1):
-            ns.img = None
-            print ns.img
             time.sleep(0.1)
             _,f = c.read()
             if np.array_equal(f,ns.img) == True:
