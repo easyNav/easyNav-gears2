@@ -377,12 +377,6 @@ if __name__ == '__main__':
             print ns.img
             time.sleep(0.1)
             _,f = c.read()
-            _,f = c.read()
-            _,f = c.read()
-            _,f = c.read()
-            _,f = c.read()
-            _,f = c.read()
-            _,f = c.read()
             if np.array_equal(f,ns.img) == True:
                 print "Same image"
                 continue

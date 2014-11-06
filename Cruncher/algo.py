@@ -48,6 +48,9 @@ def get_corners(point_arr):
     return { "tl":tl, "tr":tr, "bl":bl, "br":br, "center":center }
 
 def process_image(frame):
+
+    print "*****************"
+
     f = frame
     #f = cv2.flip(f,1)
     f_copy = np.copy(f)
