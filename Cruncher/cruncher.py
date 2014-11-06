@@ -347,10 +347,11 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
         # HACK!!
-        # time.sleep(1)
-        # _,f = c.read()
-        # ns.img = f
-        # ns.ping_img = 1
+        print "TRY CAP"
+        time.sleep(5)
+        _,f = c.read()
+        ns.img = f
+        ns.ping_img = 1
 
         # Check for change in start pos
         if ns.ping_start == 1:
