@@ -321,9 +321,9 @@ if __name__ == '__main__':
     ns.ping_data = 0
 
     # Camera Event
-    c = cv2.VideoCapture(0)
-    c.set(3,800)
-    c.set(4,600)
+    # c = cv2.VideoCapture(0)
+    # c.set(3,800)
+    # c.set(4,600)
     ns.img = None
     ns.ping_img = 0
 
@@ -349,9 +349,15 @@ if __name__ == '__main__':
         # HACK!!
         print "TRY CAP"
         time.sleep(5)
+        c = cv2.VideoCapture(0)
+        c.set(3,800)
+        c.set(4,600)
+        time.sleep(1)
         _,f = c.read()
         ns.img = f
         ns.ping_img = 1
+        time.sleep(1)
+        c.release()
 
         # Check for change in start pos
         if ns.ping_start == 1:
