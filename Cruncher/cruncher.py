@@ -8,6 +8,7 @@ import json
 import math
 import sys
 import cv2
+
 from collections import deque
 from ImageProcessingServer import ImageClient
 
@@ -300,6 +301,7 @@ def run_camera(ns):
 
     c.release()
 
+
 if __name__ == '__main__':
 
     # Mp Manager
@@ -320,7 +322,7 @@ if __name__ == '__main__':
     ns.ping_data = 0
 
     # Camera Event
-    c = cv.CaptureFromCAM(0)
+    c = cv2.VideoCapture(0)
     c.set(3,800)
     c.set(4,600)
     ns.img = None
@@ -346,11 +348,7 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
         # HACK!!
-        # time.sleep(4)
-        # _,f = c.read()
-        # _,f = c.read()
-        # _,f = c.read()
-        # _,f = c.read()
+        # time.sleep(1)
         # _,f = c.read()
         # ns.img = f
         # ns.ping_img = 1
