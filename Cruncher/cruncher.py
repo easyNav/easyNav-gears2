@@ -373,7 +373,9 @@ if __name__ == '__main__':
         # Set image
         _,f = c.read()
         print "NEW IMAGE WRITTEN"
+        ns.img = None
         ns.img = f
+
         time.sleep(0.1)
         ns.ping_img = 1
 
