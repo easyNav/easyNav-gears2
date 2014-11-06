@@ -32,6 +32,8 @@ class ImageClient(object):
         while(1):
             if img != None:
 
+                print "x"
+
                 # Image has finished processing
                 if image_processed == 1:
                     image_processed = 0
