@@ -347,17 +347,17 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
         # HACK!!
-        print "TRY CAP"
-        time.sleep(5)
-        c = cv2.VideoCapture(0)
-        c.set(3,800)
-        c.set(4,600)
-        time.sleep(1)
-        _,f = c.read()
-        ns.img = f
-        ns.ping_img = 1
-        time.sleep(1)
-        c.release()
+        # print "TRY CAP"
+        # time.sleep(5)
+        # c = cv2.VideoCapture(0)
+        # c.set(3,800)
+        # c.set(4,600)
+        # time.sleep(1)
+        # _,f = c.read()
+        # ns.img = f
+        # ns.ping_img = 1
+        # time.sleep(1)
+        # c.release()
 
         # Check for change in start pos
         if ns.ping_start == 1:
@@ -378,17 +378,16 @@ if __name__ == '__main__':
         ns.ping_data = 0
 
         # Set image
-        while(1):
-            time.sleep(0.1)
-            _,f = c.read()
-            if np.array_equal(f,ns.img) == True:
-                print "Same image"
-                continue
-            else:
-                print "NEW IMAGE WRITTEN"
-                ns.img = f
-                ns.ping_img = 1
-                break
+        c = cv2.VideoCapture(0)
+        c.set(3,800)
+        c.set(4,600)
+        #time.sleep(1)
+        _,f = c.read()
+        print "NEW IMAGE"
+        ns.img = f
+        ns.ping_img = 1
+        #time.sleep(1)
+        c.release()
 
     p2.join()
     p3.join()
