@@ -152,7 +152,7 @@ def process_image(frame):
         print return_copy
         print "APPENDING"
         print
-        
+
         match_arr.append(return_copy)
 
     def numeric_compare(x, y):
@@ -163,8 +163,11 @@ def process_image(frame):
         else:  #x < y
             return -1
 
-    
-    match_arr.sort(numeric_compare)
+    try:
+        match_arr.sort(numeric_compare)
+    except Exception, e:
+        print str(e)
+
     print match_arr
     texts = json.dumps(match_arr)
     print "-------------"
