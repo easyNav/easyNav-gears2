@@ -33,9 +33,9 @@ class ImageClient(object):
         while(1):
             if img != None:
 
-                print "x"
+                #print "x"
                 count=count+1
-                if count>5000:
+                if count>2000:
                     break
 
                 # Image has finished processing
