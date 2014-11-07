@@ -118,5 +118,6 @@ def process_image(frame):
             continue
         match_arr.append(item)
 
+    cv2.imwrite("output.img",f)
     texts = json.dumps(match_arr)
     return texts
