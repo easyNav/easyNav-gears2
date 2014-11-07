@@ -163,10 +163,10 @@ def process_image(frame):
         else:  #x < y
             return -1
 
-    try:
-        match_arr.sort(numeric_compare)
-    except Exception, e:
-        print str(e)
+    # try:
+    #     match_arr.sort(numeric_compare)
+    # except Exception, e:
+    #     print str(e)
         
 
     print match_arr
