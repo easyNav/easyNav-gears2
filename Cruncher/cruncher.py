@@ -301,6 +301,7 @@ def run_camera(ns):
                     ns.startx = closest_match["x"]
                     ns.starty = closest_match["y"]
                     ns.ping_start = 1
+                    print "I FUCKING PINGED START"
                 except Exception, e:
                     print str(e)
 
