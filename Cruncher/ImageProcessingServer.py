@@ -28,11 +28,15 @@ class ImageClient(object):
 
         recv_buffer = ""
         image_processed = 1
+        count = 0
 
         while(1):
             if img != None:
 
                 print "x"
+                count=count+1
+                if count>5000:
+                    break
 
                 # Image has finished processing
                 if image_processed == 1:

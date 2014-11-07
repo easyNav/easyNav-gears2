@@ -5,15 +5,49 @@ from PIL import Image
 import time
 import locations
 import json
+import difflib
+
+def match_location(string):
+
+    if string == "" or string == " ":
+        return ""
+
+    prev_percent = 0
+    winner = ""
+    winner_item = None
+
+    dict_copy = list(locations.dicts)
+
+    # Loop through
+    for item in dict_copy:
+        name = item["name"]
+        curr_percent = difflib.SequenceMatcher(None, string, name).ratio()
+
+        #print name + " " + str(curr_percent)
+
+        if curr_percent > prev_percent:
+            prev_percent = curr_percent
+            winner = name
+            winner_item = item
+            winner_item["actual"] = string
+            winner_item["percent"] = curr_percent
+    
+    # print "WINNER"
+    # print winner_item
+    # print "WINNER"
+
+    if prev_percent < 0.4:
+      return None
+
+    return winner_item
 
 def get_text(frame):
     arr = np.array(frame)
     img = Image.fromarray(arr)
 
     orig_text = image_to_string(img)
-    print "ORIG: " + orig_text
 
-    final = locations.match_location(orig_text)
+    final = match_location(orig_text)
     return final
 
 def getthresholdedimg(hsv):
@@ -85,13 +119,11 @@ def process_image(frame):
         perimeter = cv2.arcLength(cnt,True)
         if area < 800:
             continue
-        print area
-
-
+        #print area
 
         # Approx Quad
         approx = cv2.approxPolyDP(cnt,0.05*cv2.arcLength(cnt,True),True)
-        print len(approx)
+        #print len(approx)
         if not cv2.isContourConvex(approx) or len(approx) < 4 :
             continue
         #print approx[1][0]
@@ -110,14 +142,33 @@ def process_image(frame):
         M = cv2.getPerspectiveTransform(src,dst)
         dst = cv2.warpPerspective(f_copy,M,(width,height))
 
-        #cv2.imshow("bitwise",dst)
-        #cv2.imshow("x",f)
-        #time.sleep(5)
-        item = get_text(dst)
-        if item == None:
+        return_object = get_text(dst)
+        return_copy = dict(return_object)
+        if return_copy == None or return_copy == "":
             continue
-        match_arr.append(item)
 
-    cv2.imwrite("output.img",f)
+        print
+        print "APPENDING"
+        print return_copy
+        print "APPENDING"
+        print
+        
+        match_arr.append(return_copy)
+
+    def numeric_compare(x, y):
+        if x["percent"] > y["percent"]:
+            return 1
+        elif x["percent"] == y["percent"]:
+            return 0
+        else:  #x < y
+            return -1
+
+    
+    match_arr.sort(numeric_compare)
+    print match_arr
     texts = json.dumps(match_arr)
+    print "-------------"
+    print texts
+    cv2.putText(f,texts, (0,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, 255)
+    cv2.imwrite("output.jpg",f)
     return texts
