@@ -167,6 +167,7 @@ def process_image(frame):
         match_arr.sort(numeric_compare)
     except Exception, e:
         print str(e)
+        match_arr = []
 
     print match_arr
     texts = json.dumps(match_arr)
