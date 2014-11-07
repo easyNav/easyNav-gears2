@@ -295,12 +295,14 @@ def run_camera(ns):
             # Something found
             if found == 1:
 
-                # Get Last Element
-                closest_match = json_response[-1]
-
-                ns.startx = closest_match["x"]
-                ns.starty = closest_match["y"]
-                ns.ping_start = 1
+                try:
+                    # Get Last Element
+                    closest_match = json_response[-1]
+                    ns.startx = closest_match["x"]
+                    ns.starty = closest_match["y"]
+                    ns.ping_start = 1
+                except Exception, e:
+                    print str(e)
 
                 # [{"actual": "l CONTROL ROOM |", "name": "CONTROL ROOM", "y": 20, "x": 20, "z": 0, "percent": 0.8571428571428571}, {"actual": "STAIRS", "name": "STAIRS", "y": 40, "x": 40, "z": 0, "percent": 1.0}]
                 # [{u'id': 87, u'actual': u'STAI RS', u'percent': u'0.923076923077', u'name': u'STAIRS', u'SUID': u'31'}]
