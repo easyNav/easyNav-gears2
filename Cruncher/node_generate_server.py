@@ -46,7 +46,7 @@ class MyHandler(BaseHTTPRequestHandler):
         else:
             self.send_response(200)
             self.send_header('Content-type','application/vnd.openxmlformats-officedocument.presentationml.presentation')
-            self.send_header('Content-Disposition','attachment; filename=HELLO.pptx')
+            self.send_header('Content-Disposition','attachment; filename='+name+'.pptx')
 
             self.end_headers()
             self.wfile.write(f.read())
