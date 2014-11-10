@@ -34,6 +34,9 @@ class MyHandler(BaseHTTPRequestHandler):
         try:
             ip = qs['ip'][0]
             essid = qs['essid'][0]
+            f = open('ipfile.txt','w')
+            f.write(ip + " " + essid)
+            f.close()
         except Exception,e:
             self.send_response(200)
             self.wfile.write(str(e))
