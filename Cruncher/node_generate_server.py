@@ -31,27 +31,35 @@ class MyHandler(BaseHTTPRequestHandler):
             path, tmp = path.split('?', 1)
             qs = urlparse.parse_qs(tmp)
 
-        f = None
         try:
-            name = qs['name'][0]
-            name = name.replace("-","\n")
-            generate_ppt(name)
-            f = open('updated.pptx','rb')
+            ip = qs['ip'][0]
+            essid = qs['essid'][0]
         except Exception,e:
-            print str(e)
-
-
-        if f==None:
-            self.wfile.write('Hello world')
-        else:
             self.send_response(200)
-            self.send_header('Content-type','application/vnd.openxmlformats-officedocument.presentationml.presentation')
-            self.send_header('Content-Disposition','attachment; filename='+name+'.pptx')
-
-            self.end_headers()
-            self.wfile.write(f.read())
-            f.close()
+            self.wfile.write(str(e))
         return
+
+        # f = None
+        # try:
+        #     name = qs['name'][0]
+        #     name = name.replace("-","\n")
+        #     generate_ppt(name)
+        #     f = open('updated.pptx','rb')
+        # except Exception,e:
+        #     print str(e)
+
+
+        # if f==None:
+        #     self.wfile.write('Hello world')
+        # else:
+        #     self.send_response(200)
+        #     self.send_header('Content-type','application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        #     self.send_header('Content-Disposition','attachment; filename='+name+'.pptx')
+
+        #     self.end_headers()
+        #     self.wfile.write(f.read())
+        #     f.close()
+        # return
 
     # def log_request(self, code=None, size=None):
     #     print('Request')
