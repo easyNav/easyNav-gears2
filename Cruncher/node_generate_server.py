@@ -36,6 +36,7 @@ class MyHandler(BaseHTTPRequestHandler):
             essid = qs['essid'][0]
             print ip
             print essid
+            self.send_response(200)
             f = open('ipfile.txt','w')
             f.write(ip + " " + essid)
             f.close()
