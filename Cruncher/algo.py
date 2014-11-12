@@ -13,6 +13,8 @@ def match_location(string):
     if string == "" or string == " ":
         return ""
 
+    string = string.upper()
+
     prev_percent = 0
     winner = ""
     winner_item = None
