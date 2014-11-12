@@ -173,13 +173,12 @@ def process_image(frame):
     # AUTOCAP
 
     max_percent = 0
-    final_item = None
+    final_item = []
     for item in match_arr:
-        if item["percent"] > max_percent:
+        if (item["percent"] > max_percent) and (item["percent"] > 0.6):
             max_percent = item["percent"]
-            final_item = item
+            final_item = [item]
 
-    final_item = [item]
     texts = json.dumps(final_item)
     cv2.putText(f,texts, (0,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, 255)
     cv2.imwrite("output.jpg",f)
