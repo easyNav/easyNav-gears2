@@ -6,6 +6,7 @@ import time
 import locations
 import json
 import difflib
+from scipy import ndimage
 
 def match_location(string):
 
@@ -81,6 +82,18 @@ def get_corners(point_arr):
 
     return { "tl":tl, "tr":tr, "bl":bl, "br":br, "center":center }
 
+def rotateImage(image, angle):
+    return ndimage.rotate(image, angle)
+
+def numeric_compare(x, y):
+    if x["percent"] > y["percent"]:
+        return 1
+    elif x["percent"] == y["percent"]:
+        return 0
+    else:  #x < y
+        return -1
+
+
 def process_image(frame):
 
     print "*****************"
@@ -107,8 +120,6 @@ def process_image(frame):
     #cv2.drawContours(f, ctr, -1, (0,255,0), 3)
     for cnt in ctr:
 
-        print "ENTER"
-
         # Bounding Rect
         x,y,w,h = cv2.boundingRect(cnt)
         cx,cy = x+w/2, y+h/2
@@ -119,16 +130,12 @@ def process_image(frame):
         perimeter = cv2.arcLength(cnt,True)
         if area < 800:
             continue
-        #print area
 
         # Approx Quad
         approx = cv2.approxPolyDP(cnt,0.05*cv2.arcLength(cnt,True),True)
-        #print len(approx)
         if not cv2.isContourConvex(approx) or len(approx) < 4 :
             continue
-        #print approx[1][0]
         point_arr = [approx[0][0],approx[1][0],approx[2][0],approx[3][0]]
-        #print "--"
         cv2.drawContours(f, approx, -1, (0,255,0), 3)
 
         # Cut
@@ -141,38 +148,39 @@ def process_image(frame):
         dst = np.array([[0,0],[width,0],[0,height],[width,height]],np.float32)
         M = cv2.getPerspectiveTransform(src,dst)
         dst = cv2.warpPerspective(f_copy,M,(width,height))
+        rotated_dst = rotateImage(dst,180)
 
-        return_object = get_text(dst)
-        return_copy = dict(return_object)
-        if return_copy == None or return_copy == "":
-            continue
-
-        print
-        print "APPENDING"
-        print return_copy
-        print "APPENDING"
-        print
-
-        match_arr.append(return_copy)
-
-    def numeric_compare(x, y):
-        if x["percent"] > y["percent"]:
-            return 1
-        elif x["percent"] == y["percent"]:
-            return 0
-        else:  #x < y
-            return -1
+        # Check text
+        return_object1 = get_text(dst)
+        return_object2 = get_text(rotated_dst)
+        if return_object1 != None and return_object1 != "":
+            return_object1_copy = dict(return_object1)
+            match_arr.append(return_object1_copy)
+        elif return_object2 != None and return_object2 != "":
+            return_object2_copy = dict(return_object2)
+            match_arr.append(return_object2_copy)
+        print return_object1
+        print return_object2
 
     # try:
     #     match_arr.sort(numeric_compare)
     # except Exception, e:
     #     print str(e)
-        
 
-    print match_arr
-    texts = json.dumps(match_arr)
-    print "-------------"
-    print texts
+    # TO CODE!! **********************************************
+    # Rotate the image  just after the warp, and run get_text too and store in array
+    # Loop through the array, and find the largest percentage one, set that as the end
+    # AUTOCAP
+
+    max_percent = 0
+    final_item = None
+    for item in match_arr:
+        if item["percent"] > max_percent:
+            max_percent = item["percent"]
+            final_item = item
+
+    final_item = [item]
+    texts = json.dumps(final_item)
     cv2.putText(f,texts, (0,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, 255)
     cv2.imwrite("output.jpg",f)
     return texts
