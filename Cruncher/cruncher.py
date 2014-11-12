@@ -241,6 +241,8 @@ def run_camera(ns):
 
     #HOST = 'localhost'
     HOST = '54.169.105.67'
+    dc = DispatcherClient(port=9003)
+    dc.start()
 
     while(1):
 
@@ -301,12 +303,17 @@ def run_camera(ns):
                     ns.startx = closest_match["x"]
                     ns.starty = closest_match["y"]
                     ns.ping_start = 1
-                    print "I FUCKING PINGED START"
+                    
+                    # Name check
+                    name = closest_match["name"]
+                    if name == "CURB\nONE":
+                        dc.send(9002, 'cruncherAlert', {'text': 'Curb. Watch out!'})
+                    elif name == "GLASS\nONE":
+                        dc.send(9002, 'cruncherAlert', {'text': 'Glass door. Watch out!'})
+
                 except Exception, e:
                     print str(e)
 
-                # [{"actual": "l CONTROL ROOM |", "name": "CONTROL ROOM", "y": 20, "x": 20, "z": 0, "percent": 0.8571428571428571}, {"actual": "STAIRS", "name": "STAIRS", "y": 40, "x": 40, "z": 0, "percent": 1.0}]
-                # [{u'id': 87, u'actual': u'STAI RS', u'percent': u'0.923076923077', u'name': u'STAIRS', u'SUID': u'31'}]
                 print json_response
                 found = 0
 
