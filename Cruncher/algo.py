@@ -7,6 +7,9 @@ import locations
 import json
 import difflib
 from scipy import ndimage
+from multiprocessing import Pool
+from multiprocessing.dummy import Pool as ThreadPool 
+
 
 def match_location(string):
 
@@ -102,7 +105,6 @@ def process_image(frame):
 
     f = frame
     #f = cv2.flip(f,1)
-    f_copy = np.copy(f)
     blur = cv2.medianBlur(f,5)
     hsv = cv2.cvtColor(f,cv2.COLOR_BGR2HSV)
     both = getthresholdedimg(hsv)
@@ -120,7 +122,23 @@ def process_image(frame):
     # Image Contour
     ctr,heir = cv2.findContours(dilate,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     #cv2.drawContours(f, ctr, -1, (0,255,0), 3)
+
+    arr = []
     for cnt in ctr:
+        #f_copy = np.copy(f)
+        item = {"cnt":cnt, "image":f}
+        arr.append(item)
+
+    pool = ThreadPool(4)
+
+    def work(item):
+
+        print "ENTER"
+        
+        # Get item
+        f = item["image"]
+        cnt = item["cnt"]
+        f_copy = np.copy(f)
 
         # Bounding Rect
         x,y,w,h = cv2.boundingRect(cnt)
@@ -131,12 +149,12 @@ def process_image(frame):
         area = cv2.contourArea(cnt)
         perimeter = cv2.arcLength(cnt,True)
         if area < 800:
-            continue
+            return None
 
         # Approx Quad
         approx = cv2.approxPolyDP(cnt,0.05*cv2.arcLength(cnt,True),True)
         if not cv2.isContourConvex(approx) or len(approx) < 4 :
-            continue
+            return None
         point_arr = [approx[0][0],approx[1][0],approx[2][0],approx[3][0]]
         cv2.drawContours(f, approx, -1, (0,255,0), 3)
 
@@ -145,7 +163,7 @@ def process_image(frame):
         try:
             defined_corners = get_corners(point_arr)
         except:
-            continue
+            return None
         src = np.array([defined_corners["tl"],defined_corners["tr"],defined_corners["bl"],defined_corners["br"]],np.float32)
         dst = np.array([[0,0],[width,0],[0,height],[width,height]],np.float32)
         M = cv2.getPerspectiveTransform(src,dst)
@@ -154,29 +172,30 @@ def process_image(frame):
 
         # Check text
         return_object1 = get_text(dst)
-        return_object2 = get_text(rotated_dst)
         if return_object1 != None and return_object1 != "":
-            return_object1_copy = dict(return_object1)
-            match_arr.append(return_object1_copy)
-        elif return_object2 != None and return_object2 != "":
-            return_object2_copy = dict(return_object2)
-            match_arr.append(return_object2_copy)
-        print return_object1
-        print return_object2
+            if return_object1["percent"] > 0.6:
+                return_object1_copy = dict(return_object1)
+                return return_object1_copy
 
-    # try:
-    #     match_arr.sort(numeric_compare)
-    # except Exception, e:
-    #     print str(e)
+        return_object2 = get_text(rotated_dst)
+        if return_object2 != None and return_object2 != "":
+            if return_object2["percent"] > 0.6:
+                return_object2_copy = dict(return_object2)
+                return return_object2_copy
 
-    # TO CODE!! **********************************************
-    # Rotate the image  just after the warp, and run get_text too and store in array
-    # Loop through the array, and find the largest percentage one, set that as the end
-    # AUTOCAP
+        return None
+
+    match_arr = pool.map(work, arr)
+    pool.close()
+    pool.terminate()
+    pool.join()
+    print match_arr
 
     max_percent = 0
     final_item = []
     for item in match_arr:
+        if item == None:
+            continue
         if (item["percent"] > max_percent) and (item["percent"] > 0.6):
             max_percent = item["percent"]
             final_item = [item]
