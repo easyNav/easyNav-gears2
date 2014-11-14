@@ -240,8 +240,8 @@ def run_starting(ns):
 def run_img(ns):
     # Try capturing an image
     c = cv2.VideoCapture(0)
-    c.set(3,800)
-    c.set(4,600)
+    c.set(3,640)
+    c.set(4,480)
 
     while(1):
         _,f = c.read()
