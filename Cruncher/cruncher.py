@@ -8,7 +8,6 @@ import json
 import math
 import sys
 import cv2
-import subprocess
 
 from collections import deque
 from ImageProcessingServer import ImageClient
@@ -275,12 +274,15 @@ def run_camera(ns):
 
 
                     # Try capturing an image
-                    proc = subprocess.Popen("fswebcam -d /dev/video0 -r640x480 output.jpg", shell=True)
-                    proc.wait()
-                    img = cv2.imread("output.jpg")
+                    c = cv2.VideoCapture(0)
+                    c.set(3,640)
+                    c.set(4,480)
+                    _,f = c.read()
+                    c.release()
+                    print "NEW IMAGE"
 
                     print "Transmitting image"
-                    response = image_client.transmit(img)
+                    response = image_client.transmit(f)
                     print "Transmission done"
                     json_response = json.loads(response)
                     if len(json_response) > 0:
