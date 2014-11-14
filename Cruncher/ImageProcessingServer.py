@@ -132,7 +132,7 @@ class ImageProcess(object):
             
             #Receiving from client
             try:
-                data += conn.recv(4096)
+                data += conn.recv(10000)
                 reply = ''
                 if not data: 
                     print "Connection closed not data"
