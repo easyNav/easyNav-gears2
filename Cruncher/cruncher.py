@@ -237,16 +237,27 @@ def run_starting(ns):
             ns.starty = starting_event.y
             ns.ping_start = 1
 
+def run_img(ns):
+    # Try capturing an image
+    c = cv2.VideoCapture(0)
+    c.set(3,800)
+    c.set(4,600)
+
+    while(1):
+        _,f = c.read()
+        #print "NEW IMAGE"
+        ns.img = f
+
+    c.release()
+
+
 def run_camera(ns):
 
     #HOST = 'localhost'
     HOST = '54.169.105.67'
     dc = DispatcherClient(port=9003)
     dc.start()
-    # Try capturing an image
-    c = cv2.VideoCapture(0)
-    c.set(3,800)
-    c.set(4,600)
+    
 
     ns.ping_img = 1
 
@@ -278,11 +289,6 @@ def run_camera(ns):
 
                 if ns.ping_img == 1:
 
-
-                    
-                    _,f = c.read()
-                    print "NEW IMAGE"
-                    ns.img = f
 
                     print "Transmitting image"
                     response = image_client.transmit(ns.img)
@@ -375,6 +381,8 @@ if __name__ == '__main__':
     p4.start()
     p5 = multiprocessing.Process(target=run_camera, args=(ns,))
     p5.start()
+    p6 = multiprocessing.Process(target=run_img, args=(ns,))
+    p6.start()
 
     # Serial Loop
     while(1):
