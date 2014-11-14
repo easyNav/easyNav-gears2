@@ -306,10 +306,14 @@ def run_camera(ns):
                     
                     # Name check
                     name = closest_match["name"]
-                    if name == "CURB\nONE":
+                    if name == "CURB\nONE" or name == "CURB\nTWO":
                         dc.send(9002, 'cruncherAlert', {'text': 'Curb. Watch out!'})
-                    elif name == "GLASS\nONE":
+                    elif name == "GLASS\nONE" or name == "GLASS\nTWO" or name == "GLASS\nTHREE":
                         dc.send(9002, 'cruncherAlert', {'text': 'Glass door. Watch out!'})
+                    elif name == "STAIRS\nONE ST" or name == "STAIRS\nTWO ST":
+                        dc.send(9002, 'cruncherAlert', {'text': 'Starting stairs. Watch out!'})
+                    elif name == "STAIRS\nONE ED" or name == "STAIRS\nTWO ED":
+                        dc.send(9002, 'cruncherAlert', {'text': 'Ending stairs. Watch out!'})
 
                 except Exception, e:
                     print str(e)
