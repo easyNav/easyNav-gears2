@@ -275,8 +275,8 @@ def run_camera(ns):
 
                     # Try capturing an image
                     c = cv2.VideoCapture(0)
-                    c.set(3,800)
-                    c.set(4,600)
+                    c.set(3,640)
+                    c.set(4,480)
                     _,f = c.read()
                     print "NEW IMAGE"
                     ns.img = f
