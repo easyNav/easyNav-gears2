@@ -162,7 +162,7 @@ def run_data(ns):
 
     while(1):
 
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         # If no event available
         if data_event.available() != 1:
