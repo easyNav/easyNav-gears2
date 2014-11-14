@@ -239,16 +239,16 @@ def run_starting(ns):
 
 def run_img(ns):
     # Try capturing an image
-    c = cv2.VideoCapture(0)
-    c.set(3,640)
-    c.set(4,480)
+    
 
     while(1):
+        c = cv2.VideoCapture(0)
+        c.set(3,640)
+        c.set(4,480)
         _,f = c.read()
-        #print "NEW IMAGE"
         ns.img = f
-
-    c.release()
+        c.release()
+        print "NEW IMAGE"
 
 
 def run_camera(ns):
