@@ -112,7 +112,7 @@ def run_requests(ns):
     curr = get_time()
 
     while(1):
-        time.sleep(0.1)
+        time.sleep(1)
 
         try:
             elapsed = get_time()
@@ -162,7 +162,7 @@ def run_data(ns):
 
     while(1):
 
-        time.sleep(0.1)
+        time.sleep(1)
 
         # If no event available
         if data_event.available() != 1:
