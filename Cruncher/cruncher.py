@@ -279,9 +279,6 @@ def run_camera(ns):
                     c.set(4,480)
                     _,f = c.read()
                     _,f = c.read()
-                    _,f = c.read()
-                    _,f = c.read()
-                    _,f = c.read()
                     c.release()
                     print "NEW IMAGE"
 
