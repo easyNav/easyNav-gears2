@@ -243,6 +243,10 @@ def run_camera(ns):
     HOST = '54.169.105.67'
     dc = DispatcherClient(port=9003)
     dc.start()
+    # Try capturing an image
+    c = cv2.VideoCapture(0)
+    c.set(3,800)
+    c.set(4,600)
 
     while(1):
 
@@ -273,14 +277,10 @@ def run_camera(ns):
                 if ns.ping_img == 1:
 
 
-                    # Try capturing an image
-                    c = cv2.VideoCapture(0)
-                    c.set(3,800)
-                    c.set(4,600)
+                    
                     _,f = c.read()
                     print "NEW IMAGE"
                     ns.img = f
-                    c.release()
 
                     print "Transmitting image"
                     response = image_client.transmit(ns.img)
@@ -288,7 +288,7 @@ def run_camera(ns):
                     json_response = json.loads(response)
                     if len(json_response) > 0:
                         found = 1
-                    ns.ping_img = 0
+                    ns.ping_img = 1
             except Exception, e:
                 print str(e)
                 restart = 1
@@ -331,6 +331,8 @@ def run_camera(ns):
 
         # Close connection to server
         image_client.stop()
+
+    c.release()
 
 
 if __name__ == '__main__':
