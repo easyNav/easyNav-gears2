@@ -93,7 +93,7 @@ class ImageProcess(object):
         while(1):
             try:
                 conn, addr = self.s.accept()
-                #conn.settimeout(5)
+                #conn.settimeout(500)
                 print 'Connected with ' + addr[0] + ':' + str(addr[1])
                 start_new_thread(self.thread_process ,(conn,))
             except Exception, e:
@@ -120,10 +120,15 @@ class ImageProcess(object):
 
         data = ""
 
+        count = 0
+
         #infinite loop so that function do not terminate and thread do not end.
         while True:
 
             print "receiving"
+            count = count + 1
+            if count > 2000:
+                break
             
             #Receiving from client
             try:

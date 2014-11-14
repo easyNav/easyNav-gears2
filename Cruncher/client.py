@@ -4,7 +4,7 @@ import cv2
 if __name__ == '__main__':
 
     # Get an iamge
-    school_img = cv2.imread('school4.jpg')
+    school_img = cv2.imread('school6.jpg')
 
     # Open connection to server
     image_client = ImageClient('54.169.105.67',8000)
