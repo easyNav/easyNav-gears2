@@ -248,6 +248,8 @@ def run_camera(ns):
     c.set(3,800)
     c.set(4,600)
 
+    ns.ping_img = 1
+
     while(1):
 
         time.sleep(1)
