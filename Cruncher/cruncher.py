@@ -237,29 +237,12 @@ def run_starting(ns):
             ns.starty = starting_event.y
             ns.ping_start = 1
 
-def run_img(ns):
-    # Try capturing an image
-    
-
-    while(1):
-        c = cv2.VideoCapture(0)
-        c.set(3,800)
-        c.set(4,600)
-        _,f = c.read()
-        ns.img = f
-        c.release()
-        print "NEW IMAGE"
-
-
 def run_camera(ns):
 
     #HOST = 'localhost'
     HOST = '54.169.105.67'
     dc = DispatcherClient(port=9003)
     dc.start()
-    
-
-    ns.ping_img = 1
 
     while(1):
 
@@ -285,22 +268,27 @@ def run_camera(ns):
         while(1):
             try:
                 #print "Image sleep"
-                #time.sleep(1)
+                time.sleep(1)
 
                 if ns.ping_img == 1:
 
-                    if ns.img == None:
-                        print "No image"
-                        continue
-                    image_copy = np.copy(ns.img)
+
+                    # Try capturing an image
+                    c = cv2.VideoCapture(0)
+                    c.set(3,800)
+                    c.set(4,600)
+                    _,f = c.read()
+                    print "NEW IMAGE"
+                    ns.img = f
+                    c.release()
 
                     print "Transmitting image"
-                    response = image_client.transmit(image_copy)
+                    response = image_client.transmit(ns.img)
                     print "Transmission done"
                     json_response = json.loads(response)
                     if len(json_response) > 0:
                         found = 1
-                    ns.ping_img = 1
+                    ns.ping_img = 0
             except Exception, e:
                 print str(e)
                 restart = 1
@@ -344,8 +332,6 @@ def run_camera(ns):
         # Close connection to server
         image_client.stop()
 
-    c.release()
-
 
 if __name__ == '__main__':
 
@@ -385,8 +371,6 @@ if __name__ == '__main__':
     p4.start()
     p5 = multiprocessing.Process(target=run_camera, args=(ns,))
     p5.start()
-    p6 = multiprocessing.Process(target=run_img, args=(ns,))
-    p6.start()
 
     # Serial Loop
     while(1):
