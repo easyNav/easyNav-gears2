@@ -285,13 +285,17 @@ def run_camera(ns):
         while(1):
             try:
                 #print "Image sleep"
-                time.sleep(1)
+                #time.sleep(1)
 
                 if ns.ping_img == 1:
 
+                    if ns.img == None:
+                        print "No image"
+                        continue
+                    image_copy = np.copy(ns.img)
 
                     print "Transmitting image"
-                    response = image_client.transmit(ns.img)
+                    response = image_client.transmit(image_copy)
                     print "Transmission done"
                     json_response = json.loads(response)
                     if len(json_response) > 0:
