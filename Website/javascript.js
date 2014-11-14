@@ -120,10 +120,10 @@ function GridClass () {
     this.createGrid = function () {
         var baseSize = 30;
         this.grid = [];
-        for (var x = 0; x < 131; x++) {
+        for (var x = 0; x < 200; x++) {
             var blankYArray = [];
         
-            for (var y = 0; y < 51; y++) {
+            for (var y = 0; y < 200; y++) {
                 blankYArray.push({
                     "selected" : 0,
                     "text" : "",
@@ -187,6 +187,7 @@ $( document ).ready(function() {
                 xpos = Math.round(parseFloat(pos.x)/100);
                 ypos = Math.round(parseFloat(pos.y)/100);
 
+                console.log("---------------------");
                 console.log(pos);
                 console.log(xpos);
                 console.log(ypos);
@@ -233,7 +234,7 @@ $( document ).ready(function() {
 
 
     //Timer call
-    var myVar=setInterval(function () {myTimer()}, 3000);
+    var myVar=setInterval(function () {myTimer()}, 5000);
     function myTimer() {
 
 
