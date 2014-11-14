@@ -64,11 +64,11 @@ dicts=[
     "z": 0
   },
   {
-	  "name": "P TEN",
-	  "actual": "P10",
-	  "x": 37.76,
-	  "y": 15.84,
-	  "z": 0
+  "name": "P TEN",
+  "actual": "P10",
+  "x": 37.76,
+  "y": 15.84,
+  "z": 0
   },
   {
     "name": "STUDENT\nAREA",
@@ -206,37 +206,64 @@ dicts=[
   {
     "name": "STAIRS\nONE ST",
     "actual": "",
-    "x": 0,
-    "y": 0,
+    "x": 21.52,
+    "y": 24.36,
     "z": 0
   },
   {
     "name": "STAIRS\nONE ED",
     "actual": "",
-    "x": 0,
-    "y": 0,
+    "x": 21.52,
+    "y": 7.31,
     "z": 0
   },  
   {
+    "name": "STAIRS\nTWO ST",
+    "actual": "",
+    "x": 110.03,
+    "y": 12.59,
+    "z": 0
+  },
+  {
+    "name": "STAIRS\nTWO ED",
+    "actual": "",
+    "x": 121.80,
+    "y": 7.31,
+    "z": 0
+  }, 
+  {
     "name": "CURB\nONE",
     "actual": "",
-    "x": 0,
-    "y": 0,
+    "x": 56.03,
+    "y": 11.84,
     "z": 0
   },
   {
-    "name": "GLASS\nDOOR",
+    "name": "CURB\nTWO",
     "actual": "",
-    "x": 0,
-    "y": 0,
+    "x": 70.65,
+    "y": 11.84,
     "z": 0
   },
-
   {
-    "name": "CONTROL\nROOM",
+    "name": "GLASS\nONE",
     "actual": "",
-    "x": 0,
-    "y": 0,
+    "x": 42.76,
+    "y": 15.84,
+    "z": 0
+  },
+  {
+    "name": "GLASS\nTWO",
+    "actual": "",
+    "x": 71.65,
+    "y": 28.02,
+    "z": 0
+  },
+  {
+    "name": "GLASS\nTHREE",
+    "actual": "",
+    "x": 109.03,
+    "y": 7.31,
     "z": 0
   }
 ]
