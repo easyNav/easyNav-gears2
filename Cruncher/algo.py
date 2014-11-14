@@ -159,7 +159,7 @@ def process_image(frame):
         cv2.drawContours(f, approx, -1, (0,255,0), 3)
 
         # Cut
-        height, width = 480,640
+        height, width = 600,800
         try:
             defined_corners = get_corners(point_arr)
         except:

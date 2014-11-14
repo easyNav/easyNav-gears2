@@ -243,8 +243,8 @@ def run_img(ns):
 
     while(1):
         c = cv2.VideoCapture(0)
-        c.set(3,640)
-        c.set(4,480)
+        c.set(3,800)
+        c.set(4,600)
         _,f = c.read()
         ns.img = f
         c.release()
