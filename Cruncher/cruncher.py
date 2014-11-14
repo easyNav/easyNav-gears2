@@ -162,7 +162,7 @@ def run_data(ns):
 
     while(1):
 
-        time.sleep(1)
+        time.sleep(0.5)
 
         # If no event available
         if data_event.available() != 1:
@@ -230,7 +230,7 @@ def run_starting(ns):
 
     while(1):
 
-        time.sleep(0.1)
+        time.sleep(1)
 
         if starting_event.available() == 1:
             ns.startx = starting_event.x
