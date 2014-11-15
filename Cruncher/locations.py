@@ -349,5 +349,257 @@ dicts=[
     "x": 109.03,
     "y": 41.45,
     "z": 0
+  },
+  {
+    "name": "TO\nCOM1-2-31",
+    "actual": "TO COM1-2-31",
+    "x": 118.15,
+    "y": 32.92,
+    "z": 0
+  },
+  {
+    "name": "2 P TWO",
+    "actual": "P2",
+    "x": 133.39,
+    "y": 18.29,
+    "z": 0
+  },
+  {
+    "name": "SOO",
+    "actual": "Uncle Soo's Office",
+    "x": 130.96,
+    "y": 16.46,
+    "z": 0
+  },
+  {
+    "name": "COLIN",
+    "actual": "Colin's Office",
+    "x": 138.88,
+    "y": 15.85,
+    "z": 0
+  },
+  {
+    "name": "2 P FIVE",
+    "actual": "P5",
+    "x": 137.05,
+    "y": 14.63,
+    "z": 0
+  },
+  {
+    "name": "P SIX",
+    "actual": "P6",
+    "x": 147.42,
+    "y": 3.66,
+    "z": 0
+  },
+  {
+    "name": "P SEVEN",
+    "actual": "P7",
+    "x": 151.07,
+    "y": 0.0,
+    "z": 0
+  },
+  {
+    "name": "2 P EIGHT",
+    "actual": "P8",
+    "x": 158.39,
+    "y": 0.0,
+    "z": 0
+  },
+  {
+    "name": "DISCUSSION\nSIX",
+    "actual": "Discussion Room 6",
+    "x": 158.39,
+    "y": 2.44,
+    "z": 0
+  },
+  {
+    "name": "2 END\nCORRIDOR",
+    "actual": "End of Corridor",
+    "x": 198.01,
+    "y": 0.0,
+    "z": 0
+  },
+  {
+    "name": "GLASS\nFOUR",
+    "actual": "Glass Door",
+    "x": 152.29,
+    "y": 9.14,
+    "z": 0
+  },
+  {
+    "name": "2 WOODEN",
+    "actual": "Wooden Door",
+    "x": 155.34,
+    "y": 10.97,
+    "z": 0
+  },
+  {
+    "name": "2 ANOTHER\nDOOR",
+    "actual": "Another Door",
+    "x": 159.00,
+    "y": 12.80,
+    "z": 0
+  },
+  {
+    "name": "2\nSTAIRWELL",
+    "actual": "Stairwell",
+    "x": 160.83,
+    "y": 15.85,
+    "z": 0
+  },
+  {
+    "name": "HALFWAY",
+    "actual": "Halfway",
+    "x": 155.95,
+    "y": 20.12,
+    "z": 0
+  },
+  {
+    "name": "TO\nCOM2-3-11",
+    "actual": "TO COM2-3-11",
+    "x": 154.73,
+    "y": 18.90,
+    "z": 0
+  },
+  {
+    "name": "2 P ONE\nSEVEN",
+    "actual": "P17",
+    "x": 129.13,
+    "y": 21.95,
+    "z": 0
+  },
+  {
+    "name": "BIMLESH",
+    "actual": "Bimlesh's Office",
+    "x": 126.69,
+    "y": 20.73,
+    "z": 0
+  },
+  {
+    "name": "P ONE\nNINE",
+    "actual": "P19",
+    "x": 143.76,
+    "y": 7.32,
+    "z": 0
+  },
+  {
+    "name": "DAMITH",
+    "actual": "Damith's Office",
+    "x": 141.32,
+    "y": 6.10,
+    "z": 0
+  },
+  {
+    "name": "TO\nCOM1-3-18",
+    "actual": "TO COM1-3-18",
+    "x": 118.15,
+    "y": 32.92,
+    "z": 0
+  },
+  {
+    "name": "3 P TWO",
+    "actual": "P2",
+    "x": 147.42,
+    "y": 3.66,
+    "z": 0
+  },
+  {
+    "name": "P THREE",
+    "actual": "P3",
+    "x": 151.07,
+    "y": 0.0,
+    "z": 0
+  },
+  {
+    "name": "3 P FOUR",
+    "actual": "P4",
+    "x": 156.56,
+    "y": 0.0,
+    "z": 0
+  },
+  {
+    "name": "DISCUSSION\nSEVEN",
+    "actual": "Discussion Room 7",
+    "x": 156.56,
+    "y": 2.44,
+    "z": 0
+  },
+  {
+    "name": "3 END\nCORRIDOR",
+    "actual": "End of Corridor",
+    "x": 198.01,
+    "y": 0.0,
+    "z": 0
+  },
+  {
+    "name": "GLASS\nFIVE",
+    "actual": "Glass Door",
+    "x": 152.29,
+    "y": 9.14,
+    "z": 0
+  },
+  {
+    "name": "3 WOODEN",
+    "actual": "Wooden Door",
+    "x": 155.34,
+    "y": 10.97,
+    "z": 0
+  },
+  {
+    "name": "3 ANOTHER\nDOOR",
+    "actual": "Another Door",
+    "x": 159.00,
+    "y": 12.80,
+    "z": 0
+  },
+  {
+    "name": "3\nSTAIRWELL",
+    "actual": "Stairwell",
+    "x": 159.61,
+    "y": 14.02,
+    "z": 0
+  },
+  {
+    "name": "TO\nCOM2-2-16",
+    "actual": "TO COM2-2-16",
+    "x": 154.73,
+    "y": 18.90,
+    "z": 0
+  },
+  {
+    "name": "P TWELVE",
+    "actual": "P12",
+    "x": 158.39,
+    "y": 0,
+    "z": 0
+  },
+  {
+    "name": "DISCUSSION\nEIGHT",
+    "actual": "Discussion Room 8",
+    "x": 158.39,
+    "y": 2.44,
+    "z": 0
+  },
+  {
+    "name": "3 P FOURTEEN",
+    "actual": "P14",
+    "x": 138.88,
+    "y": 12.19,
+    "z": 0
+  },
+  {
+    "name": "HENRY",
+    "actual": "Henry's Room",
+    "x": 140.71,
+    "y": 12.80,
+    "z": 0
+  },
+  {
+    "name": "MYSTERIOUS",
+    "actual": "Mysterious Pt",
+    "x": 132.78,
+    "y": 17.68,
+    "z": 0
   }
 ]
