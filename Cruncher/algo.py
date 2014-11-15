@@ -57,8 +57,10 @@ def get_text(frame):
     return final
 
 def getthresholdedimg(hsv):
+    black = cv2.inRange(hsv,np.array((0,0,230)),np.array((0,0,255)))
+    white = cv2.inRange(hsv,np.array((0,0,0)),np.array((0,0,30)))
     blue = cv2.inRange(hsv,np.array((100,63,10)),np.array((120,255,255)))
-    both = cv2.add(blue,blue)
+    both = cv2.add(white,blue,black)
     return both
 
 def get_corners(point_arr):
