@@ -314,6 +314,12 @@ def run_camera(ns):
                         dc.send(9002, 'cruncherAlert', {'text': 'Starting stairs. Watch out!'})
                     elif name == "STAIRS\nONE ED" or name == "STAIRS\nTWO ED":
                         dc.send(9002, 'cruncherAlert', {'text': 'Ending stairs. Watch out!'})
+                    elif name == "2\nSTAIRSWELL":
+                        dc.send(9002, 'cruncherAlert', {'text': 'Two Stairwell. Watch out!'})
+                    elif name == "3\nSTAIRSWELL":
+                        dc.send(9002, 'cruncherAlert', {'text': 'Three Stairwell. Watch out!'})
+                    elif name == "HALFWAY":
+                        dc.send(9002, 'cruncherAlert', {'text': 'Halfway!'})
 
                 except Exception, e:
                     print str(e)
