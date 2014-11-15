@@ -57,10 +57,11 @@ def get_text(frame):
     return final
 
 def getthresholdedimg(hsv):
-    black = cv2.inRange(hsv,np.array((0,0,230)),np.array((0,0,255)))
-    white = cv2.inRange(hsv,np.array((0,0,0)),np.array((0,0,30)))
+    black = cv2.inRange(hsv,np.array((0,0,0)),np.array((0,0,100)))
+    #white = cv2.inRange(hsv,np.array((0,0,240)),np.array((0,0,255)))
+    #gray = cv2.inRange(hsv,np.array((0,0,50)),np.array((0,0,200)))
     blue = cv2.inRange(hsv,np.array((100,63,10)),np.array((120,255,255)))
-    both = cv2.add(white,blue,black)
+    both = cv2.add(black,black)
     return both
 
 def get_corners(point_arr):
@@ -106,17 +107,21 @@ def process_image(frame):
     print "*****************"
 
     f = frame
-    #f = cv2.flip(f,1)
+    f = cv2.cvtColor(f,cv2.COLOR_RGB2GRAY)
+    f = cv2.equalizeHist(f)
+    
     blur = cv2.medianBlur(f,5)
+    f = cv2.cvtColor(f,cv2.COLOR_GRAY2RGB)
     hsv = cv2.cvtColor(f,cv2.COLOR_BGR2HSV)
     both = getthresholdedimg(hsv)
-    erode = cv2.erode(both,None,iterations = 3)
-    dilate = cv2.dilate(erode,None,iterations = 10)
+    #erode = cv2.erode(both,None,iterations = 3)
+    dilate = cv2.dilate(both,None,iterations = 5)
+    dilate = cv2.erode(dilate,None,iterations = 3)
 
     # Mask Dilations
-    dilate_bitwised = cv2.bitwise_and(f,f, mask= dilate)
-    erode_bitwised = cv2.bitwise_and(f,f, mask= erode)
-
+    #dilate_bitwised = cv2.bitwise_and(f,f, mask= dilate)
+    #erode_bitwised = cv2.bitwise_and(f,f, mask= erode)
+    cv2.imwrite("eroded.jpg",dilate)
     # Texts
     texts = ""
     match_arr = []
